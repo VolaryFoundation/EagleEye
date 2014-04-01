@@ -15,5 +15,12 @@ describe "Group Edit" do
     page.should have_css('section#mockingbird_edit', visible: true)
   end
 
-  it 'should update the page after main info submit', vcr: true, js: true
+  it 'should update the page after main info submit', vcr: true, js: true do
+    click_link('Edit fields here')
+    fill_in "group[description]", with: "Testing"
+    click_button "main_info_submit"
+    
+    page.should have_css('section#mockingbird_edit', visible: false)
+    page.should have_content("Description:")
+  end
 end

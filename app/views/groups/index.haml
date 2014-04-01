@@ -15,7 +15,7 @@
                 %img.group_img.resize{src: "http://placehold.it/180x125.png"}
               .main_info
                 -if group['props'].present? && group['props']['name'].present? && group['props']['name'][0].present?
-                  %a{href: "/groups/#{group['refs']['mockingbird']}"}= group['props']['name'][0]['value']
+                  %a{href: "/groups/#{group['_id']}"}= group['props']['name'][0]['value']
                 -if group['location'].present?
                   %p= location_to_html(group['location'])
         -else

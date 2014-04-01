@@ -61,24 +61,7 @@ module SC
     end
 
     get "/:id" do
-      @mb_group = Group.find(params[:id])
-      if @mb_group.present?
-        if @mb_group.eagle_id.present?
-          begin
-            @eagle_group = JSON.parse(RestClient.get "#{ENV['EAGLE_SERVER']}groups/#{@mb_group.eagle_id}")
-          rescue
-            @eagle_group = nil
-          end
-        end
-
-        if @eagle_group.present?
-          @meetup_group = (@eagle_group['refs'].has_key?('meetup') ? @meetup_group = source_puller('meetup', @eagle_group) : nil)
-          @facebook_group = (@eagle_group['refs'].has_key?('facebook') ? @facebook_group = source_puller('facebook', @eagle_group) : nil)
-        end
         haml :"groups/show"
-      else
-        haml "%h2 I am sorry but we can not find a group with the id: #{params[:id]}"
-      end
     end
     
     post "/:id/claim" do
