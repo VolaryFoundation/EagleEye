@@ -1,1 +1,8 @@
-%h1="Group: #{params[:id]}"
+#frame
+  %h1="Group: #{params[:id]}"
+  %p="{group:name}"
+%script= "var theID = '" + params[:id] + "';"
+%script{:type=>"text/javascript", src: '../javascripts/lodash.min.js'}
+%script{:type=>"text/javascript", src: '../javascripts/backbone.min.js'}
+%script{:type=>"text/javascript", src: '../javascripts/rivets.min.js'}
+%script{:type=>"text/javascript", src: '../javascripts/groups.js'}
