@@ -61,7 +61,8 @@ module SC
     get "/:id" do
       #@group = JSON.parse(RestClient.get("http://api.secularconnect.org/groups/#{params[:id]}"))
       #if @group.present?
-        haml :"groups/show"
+      @claims = Claim.find_all_by_eagle_id(params[:id])
+      haml :"groups/show"
       #else
       #  html "%h2=#{params[:id]} does not exist"
       #end

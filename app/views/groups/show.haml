@@ -2,13 +2,17 @@
   #page_title
     %h1="Group: #{params[:id]}"
   #main
+    %section{id: 'testing'}
+      %p{:"rv-show" => 'ui:isAdmin'} Admin Can See This
+      %p{:"rv-show" => 'ui:isOwner'}  Admin and Owners can see this
+      %p Every one can see this
     %section{id: 'ref_view'}
       %h3 Refs
       %ul
         %li{:'rv-each-ref' => 'group:refs'} 
           {ref | cleanUpRef }
-          %input{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
-      %form{action: 'Post', url: 'whatever'}
+          %input{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef", :"rv-show" => 'ui:isOwner'}
+      %form{action: 'Post', url: 'whatever',  :"rv-show" => 'ui:isOwner'}
         %fieldset
           %p{:'rv-show' => 'ui.addRefError'} Error, Pick an adapter
           %select#addRefAdapterSelect
@@ -17,11 +21,15 @@
             %option{value: 'mockingbird'} Mockingbird
           %input#addRefValue{type: 'text'}
           %input{type: 'submit', value: 'Add', :'rv-on-click' => "ui.addRef"}
+    .flash{:'rv-show' => 'ui:groupControlFlash'}
+      .notice{:'rv-show' => 'ui:groupControlNotice'}
+        %p{:'rv-show' => 'ui:groupControlClaimMade'}You claim has been submited and will be reviewed by and admin
+      .error{:'rv-show' => 'ui:groupControlError'}
     %section{id: 'group_control'}
-      %input{type: 'submit', value: 'Save Group (No Workie)', :'rv-on-click' => "ui.saveGroup"}
-      %input{type: 'submit', value: 'Delete Group', :'rv-on-click' => "ui.deleteGroup"}
-      %input{type: 'submit', value: 'Claim Group', :'rv-on-click' => "ui.claimGroup"}
-    %section{id: 'claims_control'}
+      %input{type: 'submit', value: 'Save Group (No Workie)', :'rv-on-click' => "ui.saveGroup", :"rv-show" => 'ui:isOwner'}
+      %input{type: 'submit', value: 'Delete Group', :'rv-on-click' => "ui.deleteGroup", :"rv-show" => 'ui:isOwner'}
+      %input{type: 'submit', value: 'Claim Group', :'rv-on-click' => "ui.claimGroup", :'rv-hide' => 'ui:hasClaim'}
+    %section{id: 'claims_control', :"rv-show" => 'ui:isOwner'}
       %table
         %tr
           %td Claimiant
@@ -38,10 +46,11 @@
   var baked = {
     eagleID: "#{params[:id]}",
     user: {
-      id: "#{current_user.id}",
-      email: "#{current_user.email}",
-      role: "#{current_user.email}"
-    }
+      id: "#{current_user.present? ? current_user.id : '1'}",
+      email: "#{current_user.present? ? current_user.email : 'none'}",
+      role: "#{current_user.present?  ? current_user.role : 'guest'}"
+    },
+    claims: #{@claims.to_json}
   }
 %script{:type=>"text/javascript", src: '../javascripts/lodash.min.js'}
 %script{:type=>"text/javascript", src: '../javascripts/backbone.min.js'}

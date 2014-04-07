@@ -1,28 +1,60 @@
 var Group = Backbone.Model.extend({
   idAttribute: '_id',
-  urlRoot: "http://localhost:3000/entities"
+  urlRoot: "http://localhost:3000/entities",
+  defaults: {
+    "type": 'group'
+  }
 })
+
+var User = Backbone.Model.extend({
+  defaults: {
+    "id": baked.user.id,
+    "email": baked.user.email,
+    "role": baked.user.role
+  }
+})
+
+var Claim = Backbone.Model.extend({
+    idAttribute: 'id',
+    urlRoot: "/api/claims"
+  })
+
+
+var Claims = Backbone.Collection.extend({
+    model: Claim,
+    url: '/api/claims?search=' + baked.eagleID,
+
+    hasClaim: function() {
+      return claims.find( function(claim) { 
+        return (user.id == claim.get('user_id'))
+      });
+    },
+
+    hasApprovedClaim: function() {
+      if (user.get('role') == 'guest') {
+        return false
+      }else{
+        result = claims.hasClaim()
+      }
+      if (result == undefined) {
+        return false
+      }else{
+        return (result.get('status') == 'approved') ? true : false
+      }
+    }
+
+  })
 
 
 
 if (typeof(baked.eagleID) != "undefined") {
   var group = new Group({_id: baked.eagleID});
   done = group.fetch()
-  var Claim = Backbone.Model.extend({
-    idAttribute: 'id',
-    urlRoot: "/api/claims"
-  })
-
-  var Claims = Backbone.Collection.extend({ 
-    model: Claim,
-    url: '/api/claims?search=' + baked.eagleID,
-  })
-
-  var claims = new Claims();
-
-  claims.fetch()
-
+  var user = new User();
+  var claims = new Claims(baked.claims);
 } else {
+  var claims = new Claims();
+  var user = new User();
   var group = new Group({refs: []});
 };
 
@@ -30,7 +62,14 @@ var UI = Backbone.Model.extend({
 
   defaults: {
     editMode: false,
-    addRefError: false
+    addRefError: false,
+    isAdmin: (user.get('role') == "admin"),
+    isOwner: ((user.get('role') == "admin") || (claims.hasApprovedClaim(user.get('id')))),
+    hasClaim: claims.hasClaim() != undefined,
+    groupControlFlash: false,
+    groupControlNotice: false,
+    groupControlClaimMade: false,
+    groupControlError: false
   },
 
   toggleEdit: function() {
@@ -84,11 +123,15 @@ var UI = Backbone.Model.extend({
   },
 
   claimGroup: function() {
+    ui.set('hasClaim', true)
     claim = new Claim({})
     claim.set('eagle_id', baked.eagleID)
     claim.save(null, {
       success: function(e, obj) {
         claims.fetch()
+        ui.set('groupControlFlash', true)
+        ui.set('groupControlNotice', true)
+        ui.set('groupControlClaimMade', true)
       }
     })
   },

@@ -15,7 +15,7 @@ class User
   key :email, required: true, unique: true
   key :password_hash
   key :password_salt
-  key :role
+  key :role, :default => 'user'
   key :password_reset_token
   key :password_reset_expiration
   
