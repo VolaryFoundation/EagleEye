@@ -9,8 +9,8 @@ module SC
       end
 
       get "/:id" do
-        group = Group.find(params[:id])
-        if group
+        group = JSON.parse(RestClient.get("http://api.secularconnect.org/groups/#{params[:id]}"))
+        if group.to_json
           ok group
         else
           missing

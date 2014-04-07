@@ -10,20 +10,20 @@ module SC
     get "/" do
       if params[:state].present?
         begin
-          @groups = JSON.parse(RestClient.get "#{ENV['EAGLE_SERVER']}groups?keys[location.state]=#{params[:state]}")
+          @groups = JSON.parse(RestClient.get "http://api.secularconnect.org/groups?keys[location.state]=#{params[:state]}")
         rescue
           puts "Had to rescue"
           @group = nil
         end
       elsif params[:city].present?
         begin
-          @groups = JSON.parse(RestClient.get "#{ENV['EAGLE_SERVER']}groups?keys[location.state]=#{params[:city]}")
+          @groups = JSON.parse(RestClient.get "http://api.secularconnect.org/groups?keys[location.state]=#{params[:city]}")
         rescue
           @group = nil
         end
       else
         begin
-          @groups = JSON.parse(RestClient.get "#{ENV['EAGLE_SERVER']}groups", {:params => {:limit => 30, :page => 0}})
+          @groups = JSON.parse(RestClient.get "http://api.secularconnect.org/groups", {:params => {:limit => 30, :page => 0}})
         rescue
           @group = nil
         end
@@ -39,9 +39,7 @@ module SC
     end
 
     get "/new" do
-      @group = Group.new()
-      @group.location = Location.new(street_address: nil, street_num: nil, city: nil, state: nil, country: nil, postal_code: nil)
-      haml :"groups/new"
+       haml :"groups/new"
     end
 
     post "/create" do
@@ -61,7 +59,12 @@ module SC
     end
 
     get "/:id" do
+      #@group = JSON.parse(RestClient.get("http://api.secularconnect.org/groups/#{params[:id]}"))
+      #if @group.present?
         haml :"groups/show"
+      #else
+      #  html "%h2=#{params[:id]} does not exist"
+      #end
     end
     
     post "/:id/claim" do

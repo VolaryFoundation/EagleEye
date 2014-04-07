@@ -1,8 +1,49 @@
 #frame
-  %h1="Group: #{params[:id]}"
-  %p="{group:name}"
-%script= "var theID = '" + params[:id] + "';"
+  #page_title
+    %h1="Group: #{params[:id]}"
+  #main
+    %section{id: 'ref_view'}
+      %h3 Refs
+      %ul
+        %li{:'rv-each-ref' => 'group:refs'} 
+          {ref | cleanUpRef }
+          %input{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
+      %form{action: 'Post', url: 'whatever'}
+        %fieldset
+          %p{:'rv-show' => 'ui.addRefError'} Error, Pick an adapter
+          %select#addRefAdapterSelect
+            %option{value: 'facebook'} Facebook
+            %option{value: 'meetup'} Meetup
+            %option{value: 'mockingbird'} Mockingbird
+          %input#addRefValue{type: 'text'}
+          %input{type: 'submit', value: 'Add', :'rv-on-click' => "ui.addRef"}
+    %section{id: 'group_control'}
+      %input{type: 'submit', value: 'Save Group (No Workie)', :'rv-on-click' => "ui.saveGroup"}
+      %input{type: 'submit', value: 'Delete Group', :'rv-on-click' => "ui.deleteGroup"}
+      %input{type: 'submit', value: 'Claim Group', :'rv-on-click' => "ui.claimGroup"}
+    %section{id: 'claims_control'}
+      %table
+        %tr
+          %td Claimiant
+          %td Status
+          %td Change
+        %tr{:'rv-each-claim' => "claims:"}
+          %td {claim:user_id}
+          %td {claim:status}
+          %td
+            %input{type: 'submit', value: 'Accept', :'rv-on-click' => "ui.acceptClaim"}
+            %input{type: 'submit', value: 'Reject', :'rv-on-click' => "ui.rejectClaim"}
+
+:javascript
+  var baked = {
+    eagleID: "#{params[:id]}",
+    user: {
+      id: "#{current_user.id}",
+      email: "#{current_user.email}",
+      role: "#{current_user.email}"
+    }
+  }
 %script{:type=>"text/javascript", src: '../javascripts/lodash.min.js'}
 %script{:type=>"text/javascript", src: '../javascripts/backbone.min.js'}
 %script{:type=>"text/javascript", src: '../javascripts/rivets.min.js'}
-%script{:type=>"text/javascript", src: '../javascripts/groups.js'}
+%script{:type=>"text/javascript", src: '../javascripts/groups.js'}s

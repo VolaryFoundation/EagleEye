@@ -1,44 +1,25 @@
 #frame
   #page_title
-    %h1= 'Create New Group'
+    %h1="Group: #{params[:id]}"
   #main
-    %section{id: 'mockingbird_edit'}
-      .form.main_info_area
-        %form{action: "create", method: :post}
-          -if @group.errors.present?
-            #group_error
-              %ul
-                - @group.errors.each do |key, error|
-                  %li= "#{key.capitalize} #{error}"
-
-          %label Name:
-          %input{type: "text", name: 'group[name]', value: @group.name, required: 'true'}
-          %br
-          -#############Location Field####################
-          %label Location:
-          %input#autocomplete{value: "#{location_to_html(@group.location)}", onFocus: "geolocate()", type:"text", required: 'true'}
-          %br
-          -#############Google Crap Field####################
-          .hidden
-            %input.field#address{name: "group[location][address]", value: (@group.location.street_address if @group.location.street_address.present?)}
-            %input.field#street_number{name: "group[location][street_num]", value: (@group.location.street_num if @group.location.street_num.present?)}
-            %input.field#route{name: "group[location][street_address]", value: (@group.location.street_address if @group.location.street_address.present?)}
-            %input.field#locality{name: "group[location][city]", value: (@group.location.city if @group.location.city.present?)}
-            %input.field#administrative_area_level_1{name: "group[location][state]", value: (@group.location.state if @group.location.state.present?)}
-            %input.field#postal_code{name: "group[location][postal_code]", value: (@group.location.postal_code if @group.location.postal_code.present?)}
-            %input.field#country{name: "group[location][country]", value: (@group.location.country if @group.location.country.present?)}
-          -#############End Google Crap#####################
-          %label Range:
-          %select{name: 'group[range]'}
-            %option{value: 'local', :selected => @group.range == "local"} Local
-            %option{value: 'regional', :selected => @group.range == "regional"} Regional
-            %option{value: 'nationwide', :selected => @group.range == "nationwide"} Nationwide
-            %option{value: 'international', :selected => @group.range == "international"} International
-          %br
-          %label Description:
-          %textarea{ name: 'group[description]', rows: "10", cols: "70"}=@group.description
-          %br
-          %input#main_info_submit{type: "submit", value: "Save"}
-          %a{href: '#mockingbird', class: 'main_info cancel'}Cancel
-
-
+    %section{id: 'ref_view'}
+      %h3 Refs
+      %ul
+        %li{:'rv-each-ref' => 'group:refs'} 
+          {ref | cleanUpRef }
+          %input{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
+      %form{action: 'Post', url: 'whatever'}
+        %fieldset
+          %p{:'rv-show' => 'ui.addRefError'} Error, Pick an adapter
+          %select#addRefAdapterSelect
+            %option{value: 'facebook'} Facebook
+            %option{value: 'meetup'} Meetup
+            %option{value: 'mockingbird'} Mockingbird
+          %input#addRefValue{type: 'text'}
+          %input{type: 'submit', value: 'Add', :'rv-on-click' => "ui.addRef"}
+    %section{id: 'group_control'}
+      %input{type: 'submit', value: 'Save Group', :'rv-on-click' => "ui.saveGroup"}
+%script{:type=>"text/javascript", src: '../javascripts/lodash.min.js'}
+%script{:type=>"text/javascript", src: '../javascripts/backbone.min.js'}
+%script{:type=>"text/javascript", src: '../javascripts/rivets.min.js'}
+%script{:type=>"text/javascript", src: '../javascripts/groups.js'}s

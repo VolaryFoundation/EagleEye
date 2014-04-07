@@ -27,7 +27,7 @@
                 %a{href: '/groups/new'}Create
           -if current_user
             %li.main_nav
-              =@current_user.email
+              = current_user.email
               %ul.sub_nav.hidden
                 %li.sub_nav
                   %a.act_as_form{href: '/logout', _method: 'delete'}Logout
