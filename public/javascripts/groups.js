@@ -1,6 +1,6 @@
 var Group = Backbone.Model.extend({
   idAttribute: '_id',
-  urlRoot: "http://localhost:3000/entities",
+  urlRoot: "http://volary-eagle-staging.herokuapp.com/entities",
   defaults: {
     "type": 'group'
   }
@@ -47,7 +47,7 @@ var Claims = Backbone.Collection.extend({
 
 var Cache = Backbone.Model.extend({
   idAttribute: '_id',
-  urlRoot: "http://localhost:3000/cache"
+  urlRoot: "http://volary-eagle-staging.herokuapp.com/cache"
 })
 
 
@@ -120,7 +120,7 @@ var UI = Backbone.Model.extend({
     if (r == true){
       group.destroy([{
         success: function(obj, responce){
-          window.location.replace("http://localhost:9393/groups")
+          window.location.replace("/groups")
         }
       }])
     }
@@ -130,7 +130,7 @@ var UI = Backbone.Model.extend({
     group.save(null, {
       success: function(e, obj) {
         if (typeof(baked.eagleID) == "undefined") {
-          window.location.replace("http://localhost:9393/groups/" + obj[0]._id)
+          window.location.replace("/groups/" + obj[0]._id)
         }else{
           alert("Updated")
         }
@@ -175,7 +175,7 @@ var UI = Backbone.Model.extend({
 
   clearCache: function() {
     $.ajax({
-      url: 'http://localhost:3000/cache/' + baked.eagleID + '?type=group' ,
+      url: 'http://volary-eagle-staging.herokuapp.com/cache/' + baked.eagleID + '?type=group' ,
       type: 'DELETE',
       success: function(result) {
         // Do something with the result
