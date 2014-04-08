@@ -2,16 +2,27 @@
   #page_title
     %h1="Group: #{params[:id]}"
   #main
-    %section{id: 'testing'}
-      %p{:"rv-show" => 'ui:isAdmin'} Admin Can See This
-      %p{:"rv-show" => 'ui:isOwner'}  Admin and Owners can see this
-      %p Every one can see this
+    .flash
+      .notice{:'rv-show' => 'ui:groupRefNotice'}
+      .alert{:'rv-show' => 'ui:groupRefError'}
+        %span{:'rv-show' => 'ui:badRefError'}
+          Some of references you provided were invalid. Please delete broken adapters and try again
+
     %section{id: 'ref_view'}
       %h3 Refs
-      %ul
-        %li{:'rv-each-ref' => 'group:refs'} 
-          {ref | cleanUpRef }
-          %input{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef", :"rv-show" => 'ui:isOwner'}
+      %table
+        %tr
+          %th Adapter
+          %th ID
+          %th Status
+          %th Actions
+        %tr{:'rv-each-ref' => 'group:refs'}
+          %td {ref.adapter}
+          %td
+            %span{:'rv-text' => 'ref.id'}
+          %td {ref.status}
+          %td
+            %input{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
       %form{action: 'Post', url: 'whatever',  :"rv-show" => 'ui:isOwner'}
         %fieldset
           %p{:'rv-show' => 'ui.addRefError'} Error, Pick an adapter
@@ -29,6 +40,7 @@
       %input{type: 'submit', value: 'Save Group (No Workie)', :'rv-on-click' => "ui.saveGroup", :"rv-show" => 'ui:isOwner'}
       %input{type: 'submit', value: 'Delete Group', :'rv-on-click' => "ui.deleteGroup", :"rv-show" => 'ui:isOwner'}
       %input{type: 'submit', value: 'Claim Group', :'rv-on-click' => "ui.claimGroup", :'rv-hide' => 'ui:hasClaim'}
+      %input{type: 'submit', value: 'Clear Cache', :'rv-on-click' => "ui.clearCache"}
     %section{id: 'claims_control', :"rv-show" => 'ui:isOwner'}
       %table
         %tr
@@ -41,6 +53,14 @@
           %td
             %input{type: 'submit', value: 'Accept', :'rv-on-click' => "ui.acceptClaim"}
             %input{type: 'submit', value: 'Reject', :'rv-on-click' => "ui.rejectClaim"}
+    %section{id: 'consolidated_cache_view'}
+      %table
+        %tr
+          %th Field
+          %th Data
+        %tr#consolidated_name
+          %td Name
+          %td{:'rv-text' => "cache:name"}
 
 :javascript
   var baked = {

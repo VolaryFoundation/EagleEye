@@ -2,12 +2,26 @@
   #page_title
     %h1="Group: #{params[:id]}"
   #main
+    .flash
+      .notice{:'rv-show' => 'ui:groupRefNotice'}
+      .alert{:'rv-show' => 'ui:groupRefError'}
+        %span{:'rv-show' => 'ui:badRefError'}
+          Some of references you provided were invalid. Please delete broken adapters and try again
     %section{id: 'ref_view'}
       %h3 Refs
-      %ul
-        %li{:'rv-each-ref' => 'group:refs'} 
-          {ref | cleanUpRef }
-          %input{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
+      %table
+        %tr
+          %th Adapter
+          %th ID
+          %th Status
+          %th Actions
+        %tr{:'rv-each-ref' => 'group:refs'}
+          %td {ref.adapter}
+          %td
+            %span{:'rv-text' => 'ref.id'}
+          %td {ref.status}
+          %td
+            %input{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
       %form{action: 'Post', url: 'whatever'}
         %fieldset
           %p{:'rv-show' => 'ui.addRefError'} Error, Pick an adapter

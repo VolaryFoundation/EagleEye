@@ -43,8 +43,12 @@ var Claims = Backbone.Collection.extend({
       }
     }
 
-  })
+})
 
+var Cache = Backbone.Model.extend({
+  idAttribute: '_id',
+  urlRoot: "http://localhost:3000/cache"
+})
 
 
 if (typeof(baked.eagleID) != "undefined") {
@@ -52,6 +56,8 @@ if (typeof(baked.eagleID) != "undefined") {
   done = group.fetch()
   var user = new User();
   var claims = new Claims(baked.claims);
+  var cache = new Cache({_id: baked.eagleID})
+  cache.fetch({data: {type: 'group'}})
 } else {
   var claims = new Claims();
   var user = new User();
@@ -69,7 +75,12 @@ var UI = Backbone.Model.extend({
     groupControlFlash: false,
     groupControlNotice: false,
     groupControlClaimMade: false,
-    groupControlError: false
+    groupControlError: false,
+    groupRefFlash: false,
+    groupRefNotice: false,
+    groupControlError: false,
+    badRefError: false
+
   },
 
   toggleEdit: function() {
@@ -87,6 +98,11 @@ var UI = Backbone.Model.extend({
     refs.splice(refs.indexOf(obj.ref), 1)
     group.set('refs', refs)
     group.trigger('change:refs')
+  },
+
+  editRef: function(e, obj) {
+    e.preventDefault();
+    console.log(obj);
   },
 
   acceptClaim: function(e, obj) {
@@ -118,6 +134,11 @@ var UI = Backbone.Model.extend({
         }else{
           alert("Updated")
         }
+      },
+      error: function(a,b,c) {
+        group.set(b.responseJSON.entity)
+        ui.set('groupRefError', true)
+        ui.set('badRefError', true)
       }
     })
   },
@@ -146,9 +167,20 @@ var UI = Backbone.Model.extend({
     ref = {}
     ref['adapter'] = adapter
     ref['id'] = value.value
+    ref['status'] = 'pending'
     refs.push(ref);
     group.set('refs', refs)
     group.trigger('change:refs')
+  },
+
+  clearCache: function() {
+    $.ajax({
+      url: 'http://localhost:3000/cache/' + baked.eagleID + '?type=group' ,
+      type: 'DELETE',
+      success: function(result) {
+        // Do something with the result
+      }
+    });
   }
 })
 
@@ -203,6 +235,7 @@ rivets.formatters.stringify = function(val) {
 rivets.bind(document.getElementById('frame'), {
   group: group,
   claims: claims,
+  cache: cache,
   ui: ui
 })
 
