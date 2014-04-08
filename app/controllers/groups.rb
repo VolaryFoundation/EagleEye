@@ -8,25 +8,10 @@ module SC
   class GroupsController < BaseController
   
     get "/" do
-      if params[:state].present?
-        begin
-          @groups = JSON.parse(RestClient.get "http://api.secularconnect.org/groups?keys[location.state]=#{params[:state]}")
-        rescue
-          puts "Had to rescue"
-          @group = nil
-        end
-      elsif params[:city].present?
-        begin
-          @groups = JSON.parse(RestClient.get "http://api.secularconnect.org/groups?keys[location.state]=#{params[:city]}")
-        rescue
-          @group = nil
-        end
-      else
-        begin
-          @groups = JSON.parse(RestClient.get "http://api.secularconnect.org/groups", {:params => {:limit => 30, :page => 0}})
-        rescue
-          @group = nil
-        end
+      begin
+        @groups = JSON.parse(RestClient.get "#{ENV['EAGLE_SERVER']}entities")
+      rescue
+        @groups = nil
       end
       haml :"groups/index"
     end
