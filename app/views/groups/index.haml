@@ -10,6 +10,6 @@
               %ul
                 - group['refs'].each do |ref|
                   %li= "#{ref['adapter']}: #{ref['id']}, #{ref['status']}"
-            %a{href: "#{group['_id']}"} View
+            %a{href: "/groups/#{group['_id']}"} View
         -else
           %li Unable to collect groups at this time.
