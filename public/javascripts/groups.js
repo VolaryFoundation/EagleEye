@@ -224,6 +224,39 @@ rivets.formatters.asAddress = function(val) {
   return loc.join(', ')
 }
 
+rivets.formatters.getSource = function(val, attr) {
+  if (val == undefined) {
+    return null
+  }else{
+    return val.fields[attr][0].source
+  }
+}
+
+rivets.formatters.getExpires = function(val, attr) {
+  if (val == undefined) {
+    return null
+  } else {
+    return val.fields[attr][0].expires
+  }
+}
+
+rivets.formatters.asDateTime = function(val) {
+  if (val == undefined) {
+    return null
+  } else {
+    return new Date(val * 1000);
+  }
+}
+
+rivets.formatters.truncate = function(val, num) {
+  if (val == undefined) {
+    return null
+  } else {
+    return val.substring(0,num) + "..."
+  }
+}
+
+
 rivets.formatters.cleanUpRef = function(val) {
   return val['adapter'] + ": " + val['id']
 }

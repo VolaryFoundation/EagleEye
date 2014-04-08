@@ -58,9 +58,24 @@
         %tr
           %th Field
           %th Data
+          %th Source
+          %th Expires
         %tr#consolidated_name
           %td Name
           %td{:'rv-text' => "cache:name"}
+          %td{:'rv-text' => "cache:_meta | getSource name"}
+          %td{:'rv-text' => "cache:_meta | getExpires name | asDateTime"}
+        %tr#consolidated_description
+          %td Description
+          %td{:'rv-text' => "cache:description | truncate 200"}
+          %td{:'rv-text' => "cache:_meta | getSource description"}
+          %td{:'rv-text' => "cache:_meta | getExpires description | asDateTime"}
+        %tr#consolidated_website
+          %td Website
+          %td
+            %a{:'rv-href' => "cache:website"} {cache:website}
+          %td{:'rv-text' => "cache:_meta | getSource website"}
+          %td{:'rv-text' => "cache:_meta | getExpires website| asDateTime"}
 
 :javascript
   var baked = {
