@@ -35,13 +35,18 @@
       %input{type: 'submit', value: 'Save Group', :'rv-on-click' => "ui.saveGroup"}
 :javascript
   var baked = {
+    eagleID: undefined,
     user: {
       id: "#{current_user.present? ? current_user.id : '1'}",
       email: "#{current_user.present? ? current_user.email : 'none'}",
       role: "#{current_user.present?  ? current_user.role : 'guest'}"
     },
+    claims: #{@claims.to_json}
   }
 %script{:type=>"text/javascript", src: '../javascripts/lodash.min.js'}
 %script{:type=>"text/javascript", src: '../javascripts/backbone.min.js'}
 %script{:type=>"text/javascript", src: '../javascripts/rivets.min.js'}
-%script{:type=>"text/javascript", src: '../javascripts/groups.js'}s
+%script{:type=>"text/javascript", src: '../javascripts/rivets_config.js'}
+%script{:type=>"text/javascript", src: '../javascripts/groups.js'}
+%script{:type=>"text/javascript", src: '../javascripts/group_new.js'}
+

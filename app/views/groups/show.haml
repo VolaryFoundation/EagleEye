@@ -58,24 +58,51 @@
         %tr
           %th Field
           %th Data
-          %th Source
-          %th Expires
         %tr#consolidated_name
           %td Name
-          %td{:'rv-text' => "cache:name"}
-          %td{:'rv-text' => "cache:_meta | getSource name"}
-          %td{:'rv-text' => "cache:_meta | getExpires name | asDateTime"}
+          %td
+            %table
+              %tr{:'rv-each-attr' => "cache:_meta.fields.name"}
+                %td{:'rv-text' =>  "attr.value"}
+                %td{:'rv-text' => "attr.source"}
         %tr#consolidated_description
           %td Description
-          %td{:'rv-text' => "cache:description | truncate 200"}
-          %td{:'rv-text' => "cache:_meta | getSource description"}
-          %td{:'rv-text' => "cache:_meta | getExpires description | asDateTime"}
+          %td
+            %table
+              %tr{:'rv-each-attr' => "cache:_meta.fields.description"}
+                %td{:'rv-text' =>  "attr.value | truncate 200"}
+                %td{:'rv-text' => "attr.source"}
         %tr#consolidated_website
           %td Website
           %td
-            %a{:'rv-href' => "cache:website"} {cache:website}
-          %td{:'rv-text' => "cache:_meta | getSource website"}
-          %td{:'rv-text' => "cache:_meta | getExpires website| asDateTime"}
+            %table
+              %tr{:'rv-each-attr' => "cache:_meta.fields.website"}
+                %td
+                  %a{:'rv-src' =>  "attr.value", :'rv-text' =>  "attr.value" }
+                %td{:'rv-text' => "attr.source"}
+        %tr#consolidated_tags
+          %td Tags
+          %td
+            %table
+              %tr{:'rv-each-attr' => "cache:_meta.fields.tags"}
+                %td{:'rv-text' =>  "attr.value | stringify"}
+                %td{:'rv-text' => "attr.source"}
+        %tr#consolidated_location
+          %td Location
+          %td
+            %table
+              %tr{:'rv-each-attr' => "cache:_meta.fields.location"}
+                %td{:'rv-text' =>  "attr.value | asAddress"}
+                %td{:'rv-text' => "attr.source"}
+        %tr#consolidated_image
+          %td Image
+          %td
+            %table
+              %tr{:'rv-each-attr' => "cache:_meta.fields.image"}
+                %td{:'rv-text' =>  "attr.value"}
+                %td{:'rv-text' => "attr.source"}
+
+
 
 :javascript
   var baked = {
@@ -90,4 +117,6 @@
 %script{:type=>"text/javascript", src: '../javascripts/lodash.min.js'}
 %script{:type=>"text/javascript", src: '../javascripts/backbone.min.js'}
 %script{:type=>"text/javascript", src: '../javascripts/rivets.min.js'}
-%script{:type=>"text/javascript", src: '../javascripts/groups.js'}s
+%script{:type=>"text/javascript", src: '../javascripts/rivets_config.js'}
+%script{:type=>"text/javascript", src: '../javascripts/groups.js'}
+%script{:type=>"text/javascript", src: '../javascripts/group_show.js'}
