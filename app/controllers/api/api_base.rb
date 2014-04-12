@@ -12,10 +12,22 @@ module SC
         status 200
         halt data.to_ical
       end
+
+      def created data
+        status 201
+        return halt data if data
+        halt
+      end
     
       def ok data
         status 200
-        return halt data.to_json if data
+        return halt data if data
+        halt
+      end
+
+      def failed data
+        status 406
+        return halt data if data
         halt
       end
     end

@@ -76,6 +76,14 @@ rivets.formatters.stringify = function(val) {
   return val.join(', ')
 }
 
+rivets.formatters.getAttributes = function(val, attr) {
+  if (val == undefined) {
+    return null
+  } else {
+    return val.fields[attr]
+  }
+}
+
 
 //new (Backbone.Router.extend({
 //

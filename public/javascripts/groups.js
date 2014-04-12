@@ -1,6 +1,6 @@
 var Group = Backbone.Model.extend({
   idAttribute: '_id',
-  urlRoot: "http://volary-eagle-staging.herokuapp.com/entities",
+  urlRoot: "/api/groups",
   defaults: {
     "type": 'group'
   }

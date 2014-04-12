@@ -17,10 +17,10 @@
           %th Status
           %th Actions
         %tr{:'rv-each-ref' => 'group:refs'}
-          %td {ref.adapter}
+          %td { ref.adapter }
           %td
             %span{:'rv-text' => 'ref.id'}
-          %td {ref.status}
+          %td { ref.status }
           %td
             %input{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
       %form{action: 'Post', url: 'whatever',  :"rv-show" => 'ui:isOwner'}
@@ -48,8 +48,8 @@
           %td Status
           %td Change
         %tr{:'rv-each-claim' => "claims:"}
-          %td {claim:user_id}
-          %td {claim:status}
+          %td { claim:user_id }
+          %td { claim:status }
           %td
             %input{type: 'submit', value: 'Accept', :'rv-on-click' => "ui.acceptClaim"}
             %input{type: 'submit', value: 'Reject', :'rv-on-click' => "ui.rejectClaim"}
@@ -62,21 +62,21 @@
           %td Name
           %td
             %table
-              %tr{:'rv-each-attr' => "cache:_meta.fields.name"}
+              %tr{:'rv-each-attr' => "cache:_meta | getAttributes name"}
                 %td{:'rv-text' =>  "attr.value"}
                 %td{:'rv-text' => "attr.source"}
         %tr#consolidated_description
           %td Description
           %td
             %table
-              %tr{:'rv-each-attr' => "cache:_meta.fields.description"}
+              %tr{:'rv-each-attr' => "cache:_meta | getAttributes description"}
                 %td{:'rv-text' =>  "attr.value | truncate 200"}
                 %td{:'rv-text' => "attr.source"}
         %tr#consolidated_website
           %td Website
           %td
             %table
-              %tr{:'rv-each-attr' => "cache:_meta.fields.website"}
+              %tr{:'rv-each-attr' => "cache:_meta | getAttributes website"}
                 %td
                   %a{:'rv-src' =>  "attr.value", :'rv-text' =>  "attr.value" }
                 %td{:'rv-text' => "attr.source"}
@@ -84,21 +84,21 @@
           %td Tags
           %td
             %table
-              %tr{:'rv-each-attr' => "cache:_meta.fields.tags"}
+              %tr{:'rv-each-attr' => "cache:_meta | getAttributes tags"}
                 %td{:'rv-text' =>  "attr.value | stringify"}
                 %td{:'rv-text' => "attr.source"}
         %tr#consolidated_location
           %td Location
           %td
             %table
-              %tr{:'rv-each-attr' => "cache:_meta.fields.location"}
+              %tr{:'rv-each-attr' => "cache:_meta | getAttributes location"}
                 %td{:'rv-text' =>  "attr.value | asAddress"}
                 %td{:'rv-text' => "attr.source"}
         %tr#consolidated_image
           %td Image
           %td
             %table
-              %tr{:'rv-each-attr' => "cache:_meta.fields.image"}
+              %tr{:'rv-each-attr' => "cache:_meta | getAttributes image"}
                 %td{:'rv-text' =>  "attr.value"}
                 %td{:'rv-text' => "attr.source"}
 

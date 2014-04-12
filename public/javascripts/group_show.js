@@ -29,7 +29,7 @@ var Claims = Backbone.Collection.extend({
 
 var Cache = Backbone.Model.extend({
   idAttribute: '_id',
-  urlRoot: "http://volary-eagle-staging.herokuapp.com/cache"
+  urlRoot: "http://localhost:3000/cache"
 })
 
 var group = new Group({_id: baked.eagleID});
@@ -93,11 +93,10 @@ var UI = Backbone.Model.extend({
   deleteGroup: function() {
     var r = confirm("Are you sure you want to delete this group?");
     if (r == true){
-      group.destroy([{
-        success: function(obj, responce){
-          window.location.replace("/groups")
-        }
-      }])
+      completed = group.destroy();
+      completed.then(function(){
+        window.location.replace("/groups/")
+      })
     }
   },
 
@@ -153,7 +152,7 @@ var UI = Backbone.Model.extend({
   clearCache: function() {
     if (typeof(baked.eagleID) == "undefined") {
       $.ajax({
-        url: 'http://volary-eagle-staging.herokuapp.com/cache/' + baked.eagleID + '?type=group' ,
+        url: 'http://localhost:3000/cache/' + baked.eagleID + '?type=group' ,
         type: 'DELETE',
         success: function(result) {
           // Do something with the result
@@ -165,11 +164,11 @@ var UI = Backbone.Model.extend({
 
 var ui = new UI()
 
-recieved.then(function() {
+//recieved.then(function() {
   rivets.bind(document.getElementById('frame'), {
     group: group,
     claims: claims,
     cache: cache,
     ui: ui
   })
-})
+//})

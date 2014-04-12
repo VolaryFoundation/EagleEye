@@ -11,8 +11,13 @@ map "/api/events" do
 end
 
 map "/api/groups" do
-  run SC::API::GroupsController
+  run SC::API::EntitiesController
 end
+
+map "/api/entities" do
+  run SC::API::EntitiesController
+end
+
 
 map "/api/claims" do
   run SC::API::ClaimsController
