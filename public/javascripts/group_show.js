@@ -27,17 +27,44 @@ var Claims = Backbone.Collection.extend({
   }
 })
 
+
 var Cache = Backbone.Model.extend({
   idAttribute: '_id',
   urlRoot: "http://localhost:3000/cache"
 })
 
+var setPrefsOnCache = function() {
+  _.each(group.get('prefs'), function(value, key) {
+    meta = new Object(cache.get('_meta'))
+    _.each(meta.fields[key], function(entry){entry['preferred'] = (entry.source == value) ? true : false})
+    cache.set('_meta', meta)
+  })
+}
+
+var updateAdapters = function() {
+  _.each(group.get('refs'), function(value) {
+    adapters.set('available', _.without(adapters.get('available'), value.adapter))
+  })
+}
+
+
+
 var group = new Group({_id: baked.eagleID});
-group.fetch()
+groupRecieved = group.fetch()
 var user = new User();
 var claims = new Claims(baked.claims);
 var cache = new Cache({_id: baked.eagleID})
-recieved = cache.fetch({data: {type: 'group'}})
+var adapters = new Adapters()
+groupRecieved.then( function() {adapters.update()})
+cache.fetch({data: {type: 'group'}})
+group.on('sync', setPrefsOnCache)
+cache.on('sync', setPrefsOnCache)
+group.on('change:prefs', setPrefsOnCache)
+group.on('change:refs', adapters.update)
+
+
+
+
 
 var UI = Backbone.Model.extend({
 
@@ -75,9 +102,13 @@ var UI = Backbone.Model.extend({
     group.trigger('change:refs')
   },
 
-  editRef: function(e, obj) {
-    e.preventDefault();
-    console.log(obj);
+  setPref: function(key, e, obj) {
+    var prefs = _.extend({}, group.get('prefs'))
+    prefs[key] = obj.attr.source
+    group.set('prefs', prefs)
+    meta = new Object( cache.get('_meta'))
+    meta['updated_at'] = new Date().getTime();
+    cache.set('_meta', meta)
   },
 
   acceptClaim: function(e, obj) {
@@ -111,26 +142,23 @@ var UI = Backbone.Model.extend({
       },
       error: function(a,b,c) {
         group.set(b.responseJSON.entity)
-        ui.set('groupRefError', true)
+        ui.set('groupError', true)
         ui.set('badRefError', true)
       }
     })
   },
 
   claimGroup: function() {
-    if (typeof(baked.eagleID) == "undefined") {
-      ui.set('hasClaim', true)
-      claim = new Claim({})
-      claim.set('eagle_id', baked.eagleID)
-      claim.save(null, {
-        success: function(e, obj) {
-          claims.fetch()
-          ui.set('groupControlFlash', true)
-          ui.set('groupControlNotice', true)
-          ui.set('groupControlClaimMade', true)
-        }
-      })
-    }
+    ui.set('hasClaim', true)
+    claim = new Claim({})
+    claim.set('eagle_id', baked.eagleID)
+    claim.save(null, {
+      success: function(e, obj) {
+        claims.fetch()
+        ui.set('groupNotice', true)
+        ui.set('groupControlClaimMade', true)
+      }
+    })
   },
 
   addRef: function(e, obj) {
@@ -169,6 +197,7 @@ var ui = new UI()
     group: group,
     claims: claims,
     cache: cache,
+    adapters: adapters,
     ui: ui
   })
 //})

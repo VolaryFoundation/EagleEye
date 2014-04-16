@@ -22,13 +22,11 @@
           %td {ref.status}
           %td
             %input{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
-      %form{action: 'Post', url: 'whatever'}
+      %form{:'rv-hide' => "adapters:free | isEmpty", action: 'Post', url: 'whatever'}
         %fieldset
           %p{:'rv-show' => 'ui.addRefError'} Error, Pick an adapter
           %select#addRefAdapterSelect
-            %option{value: 'facebook'} Facebook
-            %option{value: 'meetup'} Meetup
-            %option{value: 'mockingbird'} Mockingbird
+            %option{:'rv-each-adapter' => "adapters:free", :'rv-value' => 'adapter'} {adapter | humanize}
           %input#addRefValue{type: 'text'}
           %input{type: 'submit', value: 'Add', :'rv-on-click' => "ui.addRef"}
     %section{id: 'group_control'}
@@ -44,7 +42,7 @@
     claims: #{@claims.to_json}
   }
 %script{:type=>"text/javascript", src: '../javascripts/lodash.min.js'}
-%script{:type=>"text/javascript", src: '../javascripts/backbone.min.js'}
+%script{:type=>"text/javascript", src: '../javascripts/backbone.js'}
 %script{:type=>"text/javascript", src: '../javascripts/rivets.min.js'}
 %script{:type=>"text/javascript", src: '../javascripts/rivets_config.js'}
 %script{:type=>"text/javascript", src: '../javascripts/groups.js'}

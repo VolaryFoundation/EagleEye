@@ -3,9 +3,11 @@
     %h1="Group: #{params[:id]}"
   #main
     .flash
-      .notice{:'rv-show' => 'ui:groupRefNotice'}
-      .alert{:'rv-show' => 'ui:groupRefError'}
-        %span{:'rv-show' => 'ui:badRefError'}
+      .notice{:'rv-show' => 'ui:groupNotice'}
+        %p{:'rv-show' => 'ui:groupControlClaimMade'}
+          You claim has been submited and will be reviewed by and admin
+      .alert{:'rv-show' => 'ui:groupError'}
+        %p{:'rv-show' => 'ui:badRefError'}
           Some of references you provided were invalid. Please delete broken adapters and try again
 
     %section{id: 'ref_view'}
@@ -27,20 +29,9 @@
         %fieldset
           %p{:'rv-show' => 'ui.addRefError'} Error, Pick an adapter
           %select#addRefAdapterSelect
-            %option{value: 'facebook'} Facebook
-            %option{value: 'meetup'} Meetup
-            %option{value: 'mockingbird'} Mockingbird
+            %option{:'rv-each-adapter' => "adapters:free", :'rv-value' => 'adapter'} {adapter | humanize}
           %input#addRefValue{type: 'text'}
           %input{type: 'submit', value: 'Add', :'rv-on-click' => "ui.addRef"}
-    .flash{:'rv-show' => 'ui:groupControlFlash'}
-      .notice{:'rv-show' => 'ui:groupControlNotice'}
-        %p{:'rv-show' => 'ui:groupControlClaimMade'}You claim has been submited and will be reviewed by and admin
-      .error{:'rv-show' => 'ui:groupControlError'}
-    %section{id: 'group_control'}
-      %input{type: 'submit', value: 'Save Group (No Workie)', :'rv-on-click' => "ui.saveGroup", :"rv-show" => 'ui:isOwner'}
-      %input{type: 'submit', value: 'Delete Group', :'rv-on-click' => "ui.deleteGroup", :"rv-show" => 'ui:isOwner'}
-      %input{type: 'submit', value: 'Claim Group', :'rv-on-click' => "ui.claimGroup", :'rv-hide' => 'ui:hasClaim'}
-      %input{type: 'submit', value: 'Clear Cache', :'rv-on-click' => "ui.clearCache"}
     %section{id: 'claims_control', :"rv-show" => 'ui:isOwner'}
       %table
         %tr
@@ -58,6 +49,7 @@
         %tr
           %th Field
           %th Data
+          %th Button
         %tr#consolidated_name
           %td Name
           %td
@@ -65,6 +57,9 @@
               %tr{:'rv-each-attr' => "cache:_meta | getAttributes name"}
                 %td{:'rv-text' =>  "attr.value"}
                 %td{:'rv-text' => "attr.source"}
+                %td
+                  %p{:'rv-show' => "attr.preferred"} preferred
+                  %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind name", value: "Set Prefrence", :'rv-hide' => "attr.preferred"}
         %tr#consolidated_description
           %td Description
           %td
@@ -72,6 +67,10 @@
               %tr{:'rv-each-attr' => "cache:_meta | getAttributes description"}
                 %td{:'rv-text' =>  "attr.value | truncate 200"}
                 %td{:'rv-text' => "attr.source"}
+                %td
+                  %p{:'rv-show' => "attr.preferred"} preferred 
+                  %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind description", value: "Set Prefrence", :'rv-hide' => "attr.preferred"}
+
         %tr#consolidated_website
           %td Website
           %td
@@ -80,6 +79,10 @@
                 %td
                   %a{:'rv-src' =>  "attr.value", :'rv-text' =>  "attr.value" }
                 %td{:'rv-text' => "attr.source"}
+                %td
+                  %p{:'rv-show' => "attr.preferred"} preferred
+                  %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind website", value: "Set Prefrence", :'rv-hide' => "attr.preferred"}
+
         %tr#consolidated_tags
           %td Tags
           %td
@@ -87,6 +90,10 @@
               %tr{:'rv-each-attr' => "cache:_meta | getAttributes tags"}
                 %td{:'rv-text' =>  "attr.value | stringify"}
                 %td{:'rv-text' => "attr.source"}
+                %td
+                  %p{:'rv-show' => "attr.preferred"} preferred
+                  %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind tags", value: "Set Prefrence", :'rv-hide' => "attr.preferred"}
+
         %tr#consolidated_location
           %td Location
           %td
@@ -94,6 +101,10 @@
               %tr{:'rv-each-attr' => "cache:_meta | getAttributes location"}
                 %td{:'rv-text' =>  "attr.value | asAddress"}
                 %td{:'rv-text' => "attr.source"}
+                %td
+                  %p{:'rv-show' => "attr.preferred"} preferred
+                  %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind location", value: "Set Prefrence", :'rv-hide' => "attr.preferred"}
+
         %tr#consolidated_image
           %td Image
           %td
@@ -101,6 +112,14 @@
               %tr{:'rv-each-attr' => "cache:_meta | getAttributes image"}
                 %td{:'rv-text' =>  "attr.value"}
                 %td{:'rv-text' => "attr.source"}
+                %td
+                  %p{:'rv-show' => "attr.preferred"} preferred
+                  %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind image", value: "Set Prefrence", :'rv-hide' => "attr.preferred"}
+    %section{id: 'group_control'}
+      %input{type: 'submit', value: 'Save Group (No Workie)', :'rv-on-click' => "ui.saveGroup", :"rv-show" => 'ui:isOwner'}
+      %input{type: 'submit', value: 'Delete Group', :'rv-on-click' => "ui.deleteGroup", :"rv-show" => 'ui:isOwner'}
+      %input{type: 'submit', value: 'Claim Group', :'rv-on-click' => "ui.claimGroup", :'rv-hide' => 'ui:hasClaim'}
+      %input{type: 'submit', value: 'Clear Cache', :'rv-on-click' => "ui.clearCache"}
 
 
 
@@ -115,7 +134,7 @@
     claims: #{@claims.to_json}
   }
 %script{:type=>"text/javascript", src: '../javascripts/lodash.min.js'}
-%script{:type=>"text/javascript", src: '../javascripts/backbone.min.js'}
+%script{:type=>"text/javascript", src: '../javascripts/backbone.js'}
 %script{:type=>"text/javascript", src: '../javascripts/rivets.min.js'}
 %script{:type=>"text/javascript", src: '../javascripts/rivets_config.js'}
 %script{:type=>"text/javascript", src: '../javascripts/groups.js'}

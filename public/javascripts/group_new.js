@@ -66,9 +66,13 @@ var UI = Backbone.Model.extend({
 
 
 var ui = new UI
+var adapters = new Adapters()
+adapters.update()
+group.on('change:refs', adapters.update)
 
 rivets.bind(document.getElementById('frame'), {
   group: group,
+  adapters: adapters,
   ui: ui
 })
 

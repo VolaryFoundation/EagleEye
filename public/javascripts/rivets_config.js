@@ -68,6 +68,19 @@ rivets.formatters.truncate = function(val, num) {
 }
 
 
+rivets.formatters.eqPrefSource = function(val, attr) {
+  return group.get('prefs')[attr] == val
+}
+
+rivets.formatters.isEmpty = function(val) {
+  if (val == undefined) {
+    return true
+  } else {
+    return val.length == 0 ? true : false
+  }
+}
+
+
 rivets.formatters.cleanUpRef = function(val) {
   return val['adapter'] + ": " + val['id']
 }
@@ -81,6 +94,13 @@ rivets.formatters.getAttributes = function(val, attr) {
     return null
   } else {
     return val.fields[attr]
+  }
+}
+
+rivets.formatters.bind = function(fn) {
+  var args = [].slice.call(arguments, 1)
+  return function() {
+    fn.apply(null, _.flatten(args.concat(arguments)))
   }
 }
 

@@ -50,9 +50,9 @@ module SC
             group = e
           end
           if group.code == 200
-            created group
+            ok group
           else
-            failed group
+            failed group.to_json
           end
         else
           no_save
@@ -65,7 +65,6 @@ module SC
           time = Time.now()
           digest = Digest::MD5.hexdigest("#{time}3df603b1883a43b7b793a8b61e1544cbebb7d78f")
           group = RestClient.delete(URI.escape("http://localhost:3000/entities/#{params[:id]}?authTimestamp=#{time}&authHash=#{digest}&authId=eagle-eye"), :content_type => :json, :accept => :json){ |response, request, result, &block| response }
-          debugger
           ok '{}'.to_json
         else
           no_save
