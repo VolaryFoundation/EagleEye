@@ -30,7 +30,7 @@ var Claims = Backbone.Collection.extend({
 
 var Cache = Backbone.Model.extend({
   idAttribute: '_id',
-  urlRoot: "http://localhost:3000/cache"
+  urlRoot: baked.eagleServer + "cache"
 })
 
 var setPrefsOnCache = function() {
