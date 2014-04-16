@@ -63,7 +63,7 @@ module SC
         user = User.find(session[:user_id])
         if user.present? && (Claim.approved_claim?(user.id, params[:id]) || user.role = 'admin')
           time = Time.now()
-          digest = Digest::MD5.hexdigest("#{time}#{ENV['EAGLE_API']})
+          digest = Digest::MD5.hexdigest("#{time}#{ENV['EAGLE_API']}")
           group = RestClient.delete(URI.escape("#{ENV['EAGLE_SERVER']}entities/#{params[:id]}?authTimestamp=#{time}&authHash=#{digest}&authId=eagle-eye"), :content_type => :json, :accept => :json){ |response, request, result, &block| response }
           ok '{}'.to_json
         else
