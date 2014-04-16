@@ -9,7 +9,7 @@ module SC
 
       get "/:id" do
         begin
-          group = RestClient.get("http://localhost:3000/entities/#{params[:id]}", :accept => :json)
+          group = RestClient.get("#{ENV['EAGLE_SERVER']}entities/#{params[:id]}", :accept => :json)
         rescue => e
           e
         end
@@ -25,7 +25,7 @@ module SC
         time = Time.now()
         digest = Digest::MD5.hexdigest("#{time}3df603b1883a43b7b793a8b61e1544cbebb7d78f")
         begin
-          group = RestClient.post(URI.escape("http://localhost:3000/entities?authTimestamp=#{time}&authHash=#{digest}&authId=eagle-eye"), post_request, :content_type => :json, :accept => :json
+          group = RestClient.post(URI.escape("#{ENV['EAGLE_SERVER']}entities?authTimestamp=#{time}&authHash=#{digest}&authId=eagle-eye"), post_request, :content_type => :json, :accept => :json
 ){ |response, request, result, &block| response }
         rescue => e
           group = e
@@ -44,7 +44,7 @@ module SC
           time = Time.now()
           digest = Digest::MD5.hexdigest("#{time}3df603b1883a43b7b793a8b61e1544cbebb7d78f")
           begin
-            group = RestClient.put(URI.escape("http://localhost:3000/entities/#{params[:id]}?authTimestamp=#{time}&authHash=#{digest}&authId=eagle-eye"), post_request, :content_type => :json, :accept => :json
+            group = RestClient.put(URI.escape("#{ENV['EAGLE_SERVER']}entities/#{params[:id]}?authTimestamp=#{time}&authHash=#{digest}&authId=eagle-eye"), post_request, :content_type => :json, :accept => :json
 ){ |response, request, result, &block| response }
           rescue => e
             group = e
@@ -64,7 +64,7 @@ module SC
         if user.present? && (Claim.approved_claim?(user.id, params[:id]) || user.role = 'admin')
           time = Time.now()
           digest = Digest::MD5.hexdigest("#{time}3df603b1883a43b7b793a8b61e1544cbebb7d78f")
-          group = RestClient.delete(URI.escape("http://localhost:3000/entities/#{params[:id]}?authTimestamp=#{time}&authHash=#{digest}&authId=eagle-eye"), :content_type => :json, :accept => :json){ |response, request, result, &block| response }
+          group = RestClient.delete(URI.escape("#{ENV['EAGLE_SERVER']}entities/#{params[:id]}?authTimestamp=#{time}&authHash=#{digest}&authId=eagle-eye"), :content_type => :json, :accept => :json){ |response, request, result, &block| response }
           ok '{}'.to_json
         else
           no_save

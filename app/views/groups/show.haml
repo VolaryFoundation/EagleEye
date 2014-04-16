@@ -126,6 +126,7 @@
 :javascript
   var baked = {
     eagleID: "#{params[:id]}",
+    eagleServer: "#{ENV['EAGLE_SERVER']}",
     user: {
       id: "#{current_user.present? ? current_user.id : '1'}",
       email: "#{current_user.present? ? current_user.email : 'none'}",
