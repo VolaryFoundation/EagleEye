@@ -34,7 +34,7 @@ var UI = Backbone.Model.extend({
     group.save(null, {
       success: function(e, obj) {
         if (typeof(baked.eagleID) == "undefined") {
-          window.location.replace("/groups/" + obj[0]._id)
+          window.location.replace("/groups/" + obj._id)
         }else{
           alert("Updated")
         }
