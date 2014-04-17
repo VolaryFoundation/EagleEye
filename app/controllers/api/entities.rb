@@ -23,6 +23,7 @@ module SC
       post "/" do
         post_request = request.env["rack.input"].read
         time = Time.now()
+        time = time.gsub('+', ' ')
         digest = Digest::MD5.hexdigest("#{time}#{ENV['EAGLE_API']}")
         begin
           group = RestClient.post(URI.escape("#{ENV['EAGLE_SERVER']}entities?authTimestamp=#{time}&authHash=#{digest}&authId=eagle-eye"), post_request, :content_type => :json, :accept => :json
