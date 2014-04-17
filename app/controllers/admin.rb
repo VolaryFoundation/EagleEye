@@ -1,10 +1,9 @@
-require APP_ROOT + "/models/group"
+require APP_ROOT + "/models/claim"
 
 module SC
   class AdminController < BaseController
     get "/" do
-      @group_claims = Group.all(:user_id => nil, :pending_user_id.ne => nil)
-      @groups_deleted = Group.where(:deleted => true)
+      @group_claims = Claim.all(:status => 'pending')
       haml :"admin/index"
     end
   end

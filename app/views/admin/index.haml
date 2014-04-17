@@ -5,13 +5,8 @@
     %section{id: 'claim_view'}
       %h2 Claims
       %ul.list
-        - @group_claims.each do |group|
+        - @group_claims.each do |claim|
           %li
-            %a{href: "http://directory.secularconnect.org/groups/#{group.id}"}=group.name
-    %section{id: 'deleted_view'}
-      %h2 Deleted Groups
-      %ul.list
-        - @groups_deleted.each do |group|
-          %li
-            %a{href: "http://directory.secularconnect.org/groups/#{group.id}"}=group.name
-
+            %a{href: "mailto:#{claim.user_email}"}= claim.user_email
+            =" request access to "
+            %a{href: "http://directory.secularconnect.org/groups/#{claim.eagle_id}"}= claim.eagle_id
