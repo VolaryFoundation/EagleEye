@@ -1,4 +1,3 @@
-require APP_ROOT + "/models/group"
 require 'digest/md5'
 require 'uri'
 

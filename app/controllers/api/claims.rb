@@ -28,6 +28,8 @@ module SC
           claim.eagle_id = req['eagle_id']
           claim.status = 'pending'
           if claim.save
+            @url = "http://#{request.host}:#{request.port}/groups/#{claim.eagle_id}"
+            Pony.mail(:to => 'netops@volary.org', :subject => 'Group Ownership Claim', :body => haml(:'email/user_claim', layout: false))
             ok claim.to_json
           else
             no_post claim

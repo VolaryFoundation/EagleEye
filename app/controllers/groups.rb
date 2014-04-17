@@ -1,8 +1,5 @@
-require APP_ROOT + "/models/group"
-require APP_ROOT + "/helpers/json_source_puller.rb"
-require APP_ROOT + "/helpers/dynamic_attribute_helper.rb"
 require APP_ROOT + "/helpers/abbreviation_helper.rb"
-require APP_ROOT + "/helpers/data_format_helper.rb"
+
 
 module SC
   class GroupsController < BaseController
@@ -27,64 +24,9 @@ module SC
        haml :"groups/new"
     end
 
-    post "/create" do
-      @group = Group.new(params[:group])
-      if params['group']['location'].present? && params['group']['location']['country'].present?
-        @group.location = Location.new(params[:group][:location])
-        result = Geocoder.search(location_to_html(params[:group][:location])).first
-        @group.location.lng_lat = [result.longitude, result.latitude]
-      end
-      if @group.save
-        flash[:notice] = "Your group has been created. Click edit fields here under the secular connect area to add more infromation or change current infromation"
-        redirect "groups/#{@group.id}"
-      else
-        flash[:alert] = "Group was unable to be created. See below for detailed errors."
-        haml :"groups/new"
-      end
-    end
-
     get "/:id" do
-      #@group = JSON.parse(RestClient.get("http://api.secularconnect.org/groups/#{params[:id]}"))
-      #if @group.present?
       @claims = Claim.find_all_by_eagle_id(params[:id])
       haml :"groups/show"
-      #else
-      #  html "%h2=#{params[:id]} does not exist"
-      #end
     end
-    
-    post "/:id/claim" do
-      group = Group.find(params[:id])
-      user = current_user
-      if user.present? && group.present?
-        group.claim_group(user)
-        @url = "http://#{request.host}:#{request.port}/groups/#{group.id}"
-        Pony.mail(:to => 'netops@volary.org', :subject => 'Group Ownership Claim', :body => haml(:'email/user_claim', layout: false))
-        flash[:notice] = "You are attempting to claim this group. An admin will contact you via email as soon as possible."
-        redirect back
-      else
-        flash[:notice] = "Unable to claim this group"
-        redirect back
-      end
-    end
-    
-    post "/:id/approve" do
-      if current_user.present? && current_user.role == 'admin'
-        group = Group.find(params[:id])
-        if group.present?
-          group.respond_to_claim('approve')
-          flash[:notice] = "Claim was approved. Dont forget to email the user to let them know."
-          redirect back
-        else
-          flash[:notice] = "Unable to approve the claim"
-          redirect back
-        end
-      else
-        flash[:alert] = "You are not authrized to submit this command"
-        redirect back
-      end
-        
-    end
-    
   end
 end
