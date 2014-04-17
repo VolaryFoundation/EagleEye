@@ -6,7 +6,7 @@ module SC
   
     get "/" do
       begin
-        @groups = JSON.parse(RestClient.get "#{ENV['EAGLE_SERVER']}entities")
+        @groups = JSON.parse(RestClient.get "#{ENV['EAGLE_SERVER']}entities?limit=3000")
       rescue
         @groups = nil
       end
