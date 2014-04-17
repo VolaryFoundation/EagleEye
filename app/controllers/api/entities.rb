@@ -23,7 +23,7 @@ module SC
       post "/" do
         post_request = request.env["rack.input"].read
         time = Time.now()
-        time = time.gsub('+', ' ')
+        time = time.to_s.gsub('+', ' ')
         digest = Digest::MD5.hexdigest("#{time}#{ENV['EAGLE_API']}")
         begin
           group = RestClient.post(URI.escape("#{ENV['EAGLE_SERVER']}entities?authTimestamp=#{time}&authHash=#{digest}&authId=eagle-eye"), post_request, :content_type => :json, :accept => :json
@@ -43,6 +43,7 @@ module SC
         if user.present? && (Claim.approved_claim?(user.id, params[:id]) || user.role = 'admin')
           post_request = request.env["rack.input"].read
           time = Time.now()
+          time = time.to_s.gsub('+', ' ')
           digest = Digest::MD5.hexdigest("#{time}#{ENV['EAGLE_API']}")
           begin
             group = RestClient.put(URI.escape("#{ENV['EAGLE_SERVER']}entities/#{params[:id]}?authTimestamp=#{time}&authHash=#{digest}&authId=eagle-eye"), post_request, :content_type => :json, :accept => :json
@@ -64,6 +65,7 @@ module SC
         user = User.find(session[:user_id])
         if user.present? && (Claim.approved_claim?(user.id, params[:id]) || user.role = 'admin')
           time = Time.now()
+          time = time.to_s.gsub('+', ' ')
           digest = Digest::MD5.hexdigest("#{time}#{ENV['EAGLE_API']}")
           group = RestClient.delete(URI.escape("#{ENV['EAGLE_SERVER']}entities/#{params[:id]}?authTimestamp=#{time}&authHash=#{digest}&authId=eagle-eye"), :content_type => :json, :accept => :json){ |response, request, result, &block| response }
           ok '{}'.to_json
