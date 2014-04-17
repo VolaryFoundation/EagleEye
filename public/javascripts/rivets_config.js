@@ -25,6 +25,16 @@ rivets.configure({
   }
 })
 
+// used on rv-hide and show to check is user is logined in as well as the original check
+// This will over write the orgainl entry to false if the user is not loged in.
+rivets.formatters.checkLoginHide = function(val) {
+  if (baked.user.role == 'guest') {
+    return true
+  } else {
+    return val
+  }
+}
+
 rivets.formatters.asAddress = function(val) {
   if (!val) return ''
   var loc = []
@@ -56,6 +66,14 @@ rivets.formatters.asDateTime = function(val) {
     return null
   } else {
     return new Date(val * 1000);
+  }
+}
+
+rivets.formatters.backupID = function(val) {
+  if (val == undefined || val == "") {
+    return group.get('_id')
+  }else{
+    return val
   }
 }
 

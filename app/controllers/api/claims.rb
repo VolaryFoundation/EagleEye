@@ -22,7 +22,9 @@ module SC
         req = JSON.parse(raw_req)
         if session[:user_id].present?
           claim = Claim.new()
-          claim.user = User.find(session[:user_id])
+          user = User.find(session[:user_id])
+          claim.user = user
+          claim.user_email = user.email
           claim.eagle_id = req['eagle_id']
           claim.status = 'pending'
           if claim.save
