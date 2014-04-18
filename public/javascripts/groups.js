@@ -19,7 +19,8 @@ var Adapters = Backbone.Model.extend({
   defaults: {
     available: ['facebook', 'meetup', 'mockingbird'],
     free: [],
-    used: []
+    used: [],
+    hasFree: false
   },
 
   update: function() {
@@ -40,6 +41,15 @@ var Adapters = Backbone.Model.extend({
     })
     adapters.set('free', free)
     adapters.set('used', used)
+    adapters.set('hasFree', adapters.get('free').length != 0 ? true : false)
+  },
+
+  showRefForm: function() {
+    if (ui.get('isOwner') == true) {
+      return adapters.get('hasFree')
+    } else {
+      return false
+    }
   }
 })
 

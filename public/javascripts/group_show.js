@@ -102,6 +102,9 @@ var UI = Backbone.Model.extend({
     group.trigger('change:refs')
   },
 
+  
+
+
   setPref: function(key, e, obj) {
     var prefs = _.extend({}, group.get('prefs'))
     prefs[key] = obj.attr.source

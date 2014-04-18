@@ -53,7 +53,7 @@ module SC
           if group.code == 200
             ok group
           else
-            failed group.to_json
+            failed group
           end
         else
           no_save

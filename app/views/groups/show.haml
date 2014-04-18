@@ -25,7 +25,7 @@
           %td { ref.status }
           %td
             %input{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
-      %form{:'rv-hide' => "adapters:free | isEmpty", action: 'Post', url: 'whatever',  :"rv-show" => 'ui:isOwner'}
+      %form{action: 'Post', url: 'whatever',  :"rv-show" => 'adapters.showRefForm < :hasFree'}
         %fieldset
           %p{:'rv-show' => 'ui.addRefError'} Error, Pick an adapter
           %select#addRefAdapterSelect
