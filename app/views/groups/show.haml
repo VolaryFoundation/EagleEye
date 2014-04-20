@@ -17,13 +17,13 @@
           %th Adapter
           %th ID
           %th Status
-          %th Actions
+          %th{:"rv-show" => 'ui:isOwner'} Actions
         %tr{:'rv-each-ref' => 'group:refs'}
           %td { ref.adapter }
           %td
             %span{:'rv-text' => 'ref.id'}
           %td { ref.status }
-          %td
+          %td{:"rv-show" => 'ui:isOwner'}
             %input.danger{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
       %form{action: 'Post', url: 'whatever',  :"rv-show" => 'adapters.showRefForm < :hasFree'}
         %fieldset
@@ -53,7 +53,7 @@
               %tr{:'rv-each-attr' => "cache:_meta | getAttributes name"}
                 %td.source{:'rv-text' => "attr.source"}
                 %td.value{:'rv-text' =>  "attr.value"}
-                %td.preferred
+                %td.preferred{:"rv-show" => 'ui:isOwner'}
                   %p{:'rv-show' => "attr.preferred"} preferred
                   %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind name", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
         %tr#consolidated_description
@@ -63,7 +63,7 @@
               %tr{:'rv-each-attr' => "cache:_meta | getAttributes description"}
                 %td.source{:'rv-text' => "attr.source"}
                 %td.value{:'rv-text' =>  "attr.value | truncate 200"}
-                %td.preferred
+                %td.preferred{:"rv-show" => 'ui:isOwner'}
                   %p{:'rv-show' => "attr.preferred"} preferred 
                   %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind description", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
 
@@ -75,7 +75,7 @@
                 %td.source{:'rv-text' => "attr.source"}
                 %td.value
                   %a{:'rv-src' =>  "attr.value", :'rv-text' =>  "attr.value" }
-                %td.preferred
+                %td.preferred{:"rv-show" => 'ui:isOwner'}
                   %p{:'rv-show' => "attr.preferred"} preferred
                   %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind website", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
 
@@ -86,7 +86,7 @@
               %tr{:'rv-each-attr' => "cache:_meta | getAttributes tags"}
                 %td.source{:'rv-text' => "attr.source"}
                 %td.value{:'rv-text' =>  "attr.value | stringify"}
-                %td.preferred
+                %td.preferred{:"rv-show" => 'ui:isOwner'}
                   %p{:'rv-show' => "attr.preferred"} preferred
                   %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind tags", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
 
@@ -97,7 +97,7 @@
               %tr{:'rv-each-attr' => "cache:_meta | getAttributes location"}
                 %td.source{:'rv-text' => "attr.source"}
                 %td.value{:'rv-text' =>  "attr.value | asAddress"}
-                %td.preferred
+                %td.preferred{:"rv-show" => 'ui:isOwner'}
                   %p{:'rv-show' => "attr.preferred"} preferred
                   %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind location", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
 
