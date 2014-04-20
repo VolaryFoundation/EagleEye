@@ -11,7 +11,7 @@
           Some of references you provided were invalid. Please delete broken adapters and try again
 
     %section{id: 'ref_view'}
-      %h3 Refs
+      %h3 References
       %table
         %tr
           %th Adapter
@@ -33,6 +33,7 @@
           %input#addRefValue{type: 'text'}
           %input{type: 'submit', value: 'Add', :'rv-on-click' => "ui.addRef"}
     %section{id: 'claims_control', :"rv-show" => 'ui:isOwner'}
+      %h3 Owners/Claimiant
       %table
         %tr
           %td Claimiant
@@ -43,8 +44,9 @@
           %td { claim:status }
           %td
             %input{type: 'submit', value: 'Accept', :'rv-on-click' => "ui.acceptClaim"}
-            %input{type: 'submit', value: 'Reject', :'rv-on-click' => "ui.rejectClaim"}
+            %input.danger{type: 'submit', value: 'Reject', :'rv-on-click' => "ui.rejectClaim"}
     %section{id: 'consolidated_cache_view'}
+      %h3 Data
       %table
         %tr#consolidated_name
           %td.field Name
