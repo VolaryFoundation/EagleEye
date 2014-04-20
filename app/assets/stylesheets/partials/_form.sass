@@ -3,114 +3,25 @@
   overflow: hidden
   background-color: $dark-list-color
   padding: 14px
-  form
-    &.submit_url
-      padding: 14px
-  select
-    height: 100px
-    &.url
-      float: left
-      width: 20%
   label
     width: 100%
   input
     width: 100%
     height: 20px
     margin-bottom: 7px
-    &.url
-      &[type="text"]
-        float: right
-        width: 79%
-        clear: right
     &[type="submit"]
-      width: 90px
-      height: 25px
-      background-color: $button-color
-      color: $main-text-color
       float: right
+      width: 90px
       margin-top: 7px
-      font-size: 0.85em
-  select
-    margin-bottom: 7px
-  textarea
-    width: 100%
-    border-shadow: none
-  a
-    float: right
-    margin-top: 7px
-    padding-right: 14px
-    
+input
+  &[type="submit"]
+    height: 25px
+    background-color: $button-color
+    color: $main-text-color
+    font-size: 0.85em
     &.danger
-      color: $main-text-color
-      float: right
-      padding: 0
-      margin: -35px 0 0 0
-      width: 90px
-      height: 25px
-      text-align: center
-      background-color: red
-      display: block
-  ul
-    &.list
-      li
-        float: none
-        overflow: auto
-        padding: 7px
-        &.active
-          border: 3px solid orange
-        &:nth-child(odd)
-          background: $section-background-color
-        &:nth-child(even)
-          background: $light-list-color
-        a
-          float: none
-          margin-left: 14px
-        .url_link
-          float: left
-        .url_action_links
-          float: right
-  .delete_group_area
-    overflow: auto
-    width: 90%
-    float: left
-    p
-      width: 70%
-      color: $section-text-color
-      font-size: large
+      background-color: $error-color
 
 
-.form_error
-  background-color: #ff8080
-  text-align: center
-  height: 20px
-.no_form
-  display: inline
-  background-color: $main-background-color
-  margin: 0
-  padding: 0px
-  input
-    &[type="submit"]
-      margin: -7px 0 0 0
-.form_errors
-  width: 100%
-  text-align: center
-  color: red
-  font-weight: 1.5
-
-ul
-  margin-top: 14px
-  &.form_nav
-    li
-      margin-right: 3px
-      float: left
-      text-align: center
-      a
-        background-color: $light-list-color
-        padding: 7px 14px
-        -webkit-border-radius: 7px 7px 0 0
-        -moz-border-radius: 7px 7px 0 0
-        border-radius: 7px 7px 0 0
-        &.active
-          background-color: $dark-list-color
 
 

@@ -24,7 +24,7 @@
             %span{:'rv-text' => 'ref.id'}
           %td { ref.status }
           %td
-            %input{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
+            %input.danger{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
       %form{action: 'Post', url: 'whatever',  :"rv-show" => 'adapters.showRefForm < :hasFree'}
         %fieldset
           %p{:'rv-show' => 'ui.addRefError'} Error, Pick an adapter
@@ -46,79 +46,75 @@
             %input{type: 'submit', value: 'Reject', :'rv-on-click' => "ui.rejectClaim"}
     %section{id: 'consolidated_cache_view'}
       %table
-        %tr
-          %th Field
-          %th Data
-          %th Preferred?
         %tr#consolidated_name
-          %td Name
-          %td
-            %table
+          %td.field Name
+          %td.data
+            %table.sub
               %tr{:'rv-each-attr' => "cache:_meta | getAttributes name"}
-                %td{:'rv-text' =>  "attr.value"}
-                %td{:'rv-text' => "attr.source"}
-                %td
+                %td.source{:'rv-text' => "attr.source"}
+                %td.value{:'rv-text' =>  "attr.value"}
+                %td.preferred
                   %p{:'rv-show' => "attr.preferred"} preferred
                   %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind name", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
         %tr#consolidated_description
-          %td Description
-          %td
-            %table
+          %td.field Description
+          %td.data
+            %table.sub
               %tr{:'rv-each-attr' => "cache:_meta | getAttributes description"}
-                %td{:'rv-text' =>  "attr.value | truncate 200"}
-                %td{:'rv-text' => "attr.source"}
-                %td{:'rv-show' => 'ui:isOwner'}
+                %td.source{:'rv-text' => "attr.source"}
+                %td.value{:'rv-text' =>  "attr.value | truncate 200"}
+                %td.preferred
                   %p{:'rv-show' => "attr.preferred"} preferred 
                   %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind description", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
 
         %tr#consolidated_website
-          %td Website
-          %td
-            %table
+          %td.field Website
+          %td.data
+            %table.sub
               %tr{:'rv-each-attr' => "cache:_meta | getAttributes website"}
-                %td
+                %td.source{:'rv-text' => "attr.source"}
+                %td.value
                   %a{:'rv-src' =>  "attr.value", :'rv-text' =>  "attr.value" }
-                %td{:'rv-text' => "attr.source"}
-                %td
+                %td.preferred
                   %p{:'rv-show' => "attr.preferred"} preferred
                   %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind website", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
 
         %tr#consolidated_tags
-          %td Tags
-          %td
-            %table
+          %td.field Tags
+          %td.data
+            %table.sub
               %tr{:'rv-each-attr' => "cache:_meta | getAttributes tags"}
-                %td{:'rv-text' =>  "attr.value | stringify"}
-                %td{:'rv-text' => "attr.source"}
-                %td
+                %td.source{:'rv-text' => "attr.source"}
+                %td.value{:'rv-text' =>  "attr.value | stringify"}
+                %td.preferred
                   %p{:'rv-show' => "attr.preferred"} preferred
                   %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind tags", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
 
         %tr#consolidated_location
-          %td Location
-          %td
-            %table
+          %td.field Location
+          %td.data
+            %table.sub
               %tr{:'rv-each-attr' => "cache:_meta | getAttributes location"}
-                %td{:'rv-text' =>  "attr.value | asAddress"}
-                %td{:'rv-text' => "attr.source"}
-                %td
+                %td.source{:'rv-text' => "attr.source"}
+                %td.value{:'rv-text' =>  "attr.value | asAddress"}
+                %td.preferred
                   %p{:'rv-show' => "attr.preferred"} preferred
                   %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind location", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
 
         %tr#consolidated_image
-          %td Image
-          %td
-            %table
+          %td.field Image
+          %td.data
+            %table.sub
               %tr{:'rv-each-attr' => "cache:_meta | getAttributes image"}
-                %td{:'rv-text' =>  "attr.value"}
-                %td{:'rv-text' => "attr.source"}
-                %td{:'rv-show' => 'ui:isOwner'}
+                %td.source{:'rv-text' => "attr.source"}
+                %td.value{:'rv-text' =>  "attr.value"}
+                %td.preferred{:'rv-show' => 'ui:isOwner'}
                   %p{:'rv-show' => "attr.preferred"} preferred
                   %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind image", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
     -if current_user.present?
       %section{id: 'group_control'}
         %input{type: 'submit', value: 'Save Group', :'rv-on-click' => "ui.saveGroup", :"rv-show" => 'ui:isOwner'}
-        %input{type: 'submit', value: 'Delete Group', :'rv-on-click' => "ui.deleteGroup", :"rv-show" => 'ui:isOwner'}
+        %input.danger{type: 'submit', value: 'Delete Group', :'rv-on-click' => "ui.deleteGroup", :"rv-show" => 'ui:isOwner'}
         %input{type: 'submit', value: 'Claim Group', :'rv-on-click' => "ui.claimGroup", :'rv-hide' => 'ui:hasClaim'}
         %input{type: 'submit', value: 'Clear Cache', :'rv-on-click' => "ui.clearCache"}
 
