@@ -181,7 +181,7 @@ var UI = Backbone.Model.extend({
   },
 
   clearCache: function() {
-    if (typeof(baked.eagleID) == "undefined") {
+    if (typeof(baked.eagleID) != "undefined") {
       $.ajax({
         url: baked.eagleServer + 'cache/' + baked.eagleID + '?type=group' ,
         type: 'DELETE',
