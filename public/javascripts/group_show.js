@@ -36,8 +36,10 @@ var Cache = Backbone.Model.extend({
 var setPrefsOnCache = function() {
   _.each(group.get('prefs'), function(value, key) {
     meta = new Object(cache.get('_meta'))
-    _.each(meta.fields[key], function(entry){entry['preferred'] = (entry.source == value) ? true : false})
-    cache.set('_meta', meta)
+    if (meta) {
+      _.each(meta.fields[key], function(entry){entry['preferred'] = (entry.source == value) ? true : false})
+      cache.set('_meta', meta)
+    }
   })
 }
 
