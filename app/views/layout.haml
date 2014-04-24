@@ -12,34 +12,34 @@
 %body{onload: "initialize()"}
   #page
     %header
-      %a{href: '/'}
-        %img#mainlogo{src:'/images/main-logo.png'}
-      %nav
-        %ul
-          %li.main_nav
-            Groups
-            %ul.sub_nav.hidden
-              %li.sub_nav
-                %a{href: '/groups/map'}Map View
-              %li.sub_nav
-                %a{href: '/groups'}List View
-              %li.sub_nav
-                %a{href: '/groups/new'}Create
-          -if current_user
+      .inner_header
+        %a{href: '/'}
+          %img#mainlogo{src:'/images/main-logo.png'}
+        %nav
+          %ul
             %li.main_nav
-              = current_user.email
+              Groups
               %ul.sub_nav.hidden
                 %li.sub_nav
-                  %a.act_as_form{href: '/logout', _method: 'delete'}Logout
-                - if current_user.role == 'admin'
+                  %a{href: '/groups/map'}Map View
+                %li.sub_nav
+                  %a{href: '/groups'}List View
+                %li.sub_nav
+                  %a{href: '/groups/new'}Create
+            -if current_user
+              %li.main_nav
+                = current_user.email
+                %ul.sub_nav.hidden
                   %li.sub_nav
-                    %a{href: '/admin'}Admin
-
-          -else
-            %li.main_nav.no_dropdown
-              %a{href: '/login'}Login
-            %li.main_nav.no_dropdown
-              %a{href: '/users/new'}Signup
+                    %a.act_as_form{href: '/logout', _method: 'delete'}Logout
+                  - if current_user.role == 'admin'
+                    %li.sub_nav
+                      %a{href: '/admin'}Admin
+            -else
+              %li.main_nav.no_dropdown
+                %a{href: '/login'}Login
+              %li.main_nav.no_dropdown
+                %a{href: '/users/new'}Signup
     #columns
       #title
       #content

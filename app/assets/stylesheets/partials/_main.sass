@@ -14,10 +14,19 @@ ul
       padding-bottom: 0
 ul.list
   li
+    color: black
+    padding: .5em 1em
+    border: 1px solid #dcdcdc
+    border-right: 1px solid #B4B4B4
+    border-bottom: 1px solid #B4B4B4
+    &:first-child
+      margin-top: 1em
     &:nth-child(odd)
       background: $dark-list-color
     &:nth-child(even)
       background: $light-list-color
+ul.list ul li
+  border: none
 p
   padding-bottom: 14px
 a
@@ -27,7 +36,7 @@ a
     color: $main-text-color
 .hidden
   display: none
-section
+section.something
   background-color: $section-background-color
   color: $section-text-color
   box-sizing: border-box
@@ -41,12 +50,14 @@ section
   margin-bottom: 14px
 #page
   margin: 0 auto
-  width: 1000px
 header
-  padding-top: 14px
-  margin: 0 auto
-  height: 100px
-  width: 65%
+  background-color: rgba(23, 144, 197, 1)
+  padding: 1em 0
+  margin-bottom: 1em
+  border-bottom: 1px solid #2283AD
+  .inner_header
+    margin: 0 auto
+    width: 65%
   nav
     float: right
     margin-top: 21px
@@ -114,16 +125,33 @@ footer
         margin: 0 auto
 
 #content
-  overflow: auto
-  width: 100%
+  margin: 0 auto
+  max-width: 68em
   #frame
     width: 100%
-    overflow: auto
     #page_title
-      width: 65%  
-      margin: 0 auto
+      background-color: $section-background-color
+      color: $section-text-color
+      float: left
+      padding: 1em 0
+      width: 100%
+      margin-bottom: 1em 
+      border: 1px solid #dcdcdc
+      border-right: 1px solid #B4B4B4
+      border-bottom: 1px solid #B4B4B4
+      h1 
+        font-size: 1.1em
+        font-weight: 700
+        line-height: 1.3em
+        padding: .3em .5em
+      #claim_group
+        float: right
+        padding-right: .5em
+    #group_control
+      padding: 1em
+    .save 
+      float: right
     #main
-      width: 65%  
       margin: 0 auto   
     #sidebar
       overflow: auto
@@ -134,28 +162,15 @@ footer
       section
         width: 90%
 @media all and (max-width: 945px)
-  header
-    width: 80%
-  #page
-    width: 100%
-    footer
+  #frame
+    #main
+      float: none
+      padding: 0
+      margin: 0
+      margin-left: auto
+      margin-right: auto
+    #sidebar
       width: 80%
-    #content
-      .flash
-        width: 80%
-      #frame
-        #page_title
-          width: 80%
-        #main
-          overflow: auto
-          width: 80%
-          float: none
-          padding: 0
-          margin: 0
-          margin-left: auto
-          margin-right: auto
-        #sidebar
-          width: 80%
-          float: none
-          margin: 0 auto
-          margin-bottom: 14px
+      float: none
+      margin: 0 auto
+      margin-bottom: 14px

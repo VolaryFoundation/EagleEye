@@ -1,6 +1,9 @@
 #frame
   #page_title
-    %h1 Group: {cache:name | backupdID}
+    %h1 {cache:name | backupdID}
+    -if current_user.present?
+      %section{id: 'claim_group'}
+        %input.button{type: 'submit', value: 'Claim Group', :'rv-on-click' => "ui.claimGroup", :'rv-hide' => 'ui:hasClaim'}
   #main
     .flash
       .notice{:'rv-show' => 'ui:groupNotice'}
@@ -10,115 +13,138 @@
         %p{:'rv-show' => 'ui:badRefError'}
           Some of references you provided were invalid. Please delete broken adapters and try again
 
-    %section{id: 'ref_view'}
-      %h3 References
-      %table
+    %table{id: 'claims_control', :"rv-show" => 'ui:isOwner'}
+      %thead
         %tr
-          %th Adapter
-          %th ID
-          %th Status
-          %th{:"rv-show" => 'ui:isOwner'} Actions
-        %tr{:'rv-each-ref' => 'group:refs'}
-          %td { ref.adapter }
-          %td
-            %span{:'rv-text' => 'ref.id'}
-          %td { ref.status }
-          %td{:"rv-show" => 'ui:isOwner'}
-            %input.danger{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
-      %form{action: 'Post', url: 'whatever',  :"rv-show" => 'adapters.showRefForm < :hasFree'}
-        %fieldset
-          %p{:'rv-show' => 'ui.addRefError'} Error, Pick an adapter
-          %select#addRefAdapterSelect
-            %option{:'rv-each-adapter' => "adapters:free", :'rv-value' => 'adapter'} {adapter | humanize}
-          %input#addRefValue{type: 'text'}
-          %input{type: 'submit', value: 'Add', :'rv-on-click' => "ui.addRef"}
-    %section{id: 'claims_control', :"rv-show" => 'ui:isOwner'}
-      %h3 Owners/Claimiant
-      %table
-        %tr
-          %td Claimiant
-          %td Status
-          %td Change
+          %th.claimiant Claimiant
+          %th.claimiant_status Status
+          %th.claimiant_actions Change
+      %tbody
         %tr{:'rv-each-claim' => "claims:"}
-          %td { claim:user_email }
-          %td { claim:status }
-          %td
-            %input{type: 'submit', value: 'Accept', :'rv-on-click' => "ui.acceptClaim"}
-            %input.danger{type: 'submit', value: 'Reject', :'rv-on-click' => "ui.rejectClaim"}
+          %td.claimiant { claim:user_email }
+          %td.claimiant_status { claim:status }
+          %td.claimiant_actions
+            %input.button{type: 'submit', value: 'Accept', :'rv-on-click' => "ui.acceptClaim"}
+            %input.button.danger{type: 'submit', value: 'Reject', :'rv-on-click' => "ui.rejectClaim"}
+
     %section{id: 'consolidated_cache_view'}
-      %h3 Data
-      %table
-        %tr#consolidated_name
-          %td.field Name
-          %td.data
-            %table.sub
-              %tr{:'rv-each-attr' => "cache:_meta | getAttributes name"}
-                %td.source{:'rv-text' => "attr.source"}
-                %td.value{:'rv-text' =>  "attr.value"}
-                %td.preferred{:"rv-show" => 'ui:isOwner'}
-                  %p{:'rv-show' => "attr.preferred"} preferred
-                  %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind name", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
-        %tr#consolidated_description
-          %td.field Description
-          %td.data
-            %table.sub
-              %tr{:'rv-each-attr' => "cache:_meta | getAttributes description"}
-                %td.source{:'rv-text' => "attr.source"}
-                %td.value{:'rv-text' =>  "attr.value | truncate 200"}
-                %td.preferred{:"rv-show" => 'ui:isOwner'}
-                  %p{:'rv-show' => "attr.preferred"} preferred 
-                  %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind description", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
+      %table#consolidated_name
+        %thead
+          %tr
+            %th.empty
+            %th.field Name
+            %th.empty
+        %tbody
+          %tr{:'rv-each-attr' => "cache:_meta | getAttributes name"}
+            %td.source{:'rv-text' => "attr.source"}
+            %td.value{:'rv-text' =>  "attr.value"}
+            %td.preferred{:"rv-show" => 'ui:isOwner'}
+              %p{:'rv-show' => "attr.preferred"} Prefered
+              %input.button{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind name", value: "Select", :'rv-hide' => "attr.preferred | checkLoginHide "}
 
-        %tr#consolidated_website
-          %td.field Website
-          %td.data
-            %table.sub
-              %tr{:'rv-each-attr' => "cache:_meta | getAttributes website"}
-                %td.source{:'rv-text' => "attr.source"}
-                %td.value
-                  %a{:'rv-src' =>  "attr.value", :'rv-text' =>  "attr.value" }
-                %td.preferred{:"rv-show" => 'ui:isOwner'}
-                  %p{:'rv-show' => "attr.preferred"} preferred
-                  %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind website", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
+        %table#consolidated_description
+          %thead
+            %tr
+              %th.empty
+              %th.field Description
+              %th.empty
+          %tbody
+            %tr{:'rv-each-attr' => "cache:_meta | getAttributes description"}
+              %td.source{:'rv-text' => "attr.source"}
+              %td.value{:'rv-text' =>  "attr.value | truncate 200"}
+              %td.preferred{:"rv-show" => 'ui:isOwner'}
+                %p{:'rv-show' => "attr.preferred"} Prefered 
+                %input.button{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind description", value: "Select", :'rv-hide' => "attr.preferred | checkLoginHide "}
 
-        %tr#consolidated_tags
-          %td.field Tags
-          %td.data
-            %table.sub
-              %tr{:'rv-each-attr' => "cache:_meta | getAttributes tags"}
-                %td.source{:'rv-text' => "attr.source"}
-                %td.value{:'rv-text' =>  "attr.value | stringify"}
-                %td.preferred{:"rv-show" => 'ui:isOwner'}
-                  %p{:'rv-show' => "attr.preferred"} preferred
-                  %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind tags", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
+        %table#consolidated_website
+          %thead
+            %tr
+              %th.empty
+              %th.field Website
+              %th.empty
+          %tbody
+            %tr{:'rv-each-attr' => "cache:_meta | getAttributes website"}
+              %td.source{:'rv-text' => "attr.source"}
+              %td.value
+                %a{:'rv-src' =>  "attr.value", :'rv-text' =>  "attr.value" }
+              %td.preferred{:"rv-show" => 'ui:isOwner'}
+                %p{:'rv-show' => "attr.preferred"} Prefered
+                %input.button{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind website", value: "Select", :'rv-hide' => "attr.preferred | checkLoginHide "}
 
-        %tr#consolidated_location
-          %td.field Location
-          %td.data
-            %table.sub
-              %tr{:'rv-each-attr' => "cache:_meta | getAttributes location"}
-                %td.source{:'rv-text' => "attr.source"}
-                %td.value{:'rv-text' =>  "attr.value | asAddress"}
-                %td.preferred{:"rv-show" => 'ui:isOwner'}
-                  %p{:'rv-show' => "attr.preferred"} preferred
-                  %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind location", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
+        %table#consolidated_tags
+          %thead
+            %tr
+              %th.empty
+              %th.field Tags
+              %th.empty
+          %tbody
+            %tr{:'rv-each-attr' => "cache:_meta | getAttributes tags"}
+              %td.source{:'rv-text' => "attr.source"}
+              %td.value{:'rv-text' =>  "attr.value | stringify"}
+              %td.preferred{:"rv-show" => 'ui:isOwner'}
+                %p{:'rv-show' => "attr.preferred"} Prefered
+                %input.button{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind tags", value: "Select", :'rv-hide' => "attr.preferred | checkLoginHide "}
 
-        %tr#consolidated_image
-          %td.field Image
-          %td.data
-            %table.sub
-              %tr{:'rv-each-attr' => "cache:_meta | getAttributes image"}
-                %td.source{:'rv-text' => "attr.source"}
-                %td.value{:'rv-text' =>  "attr.value"}
-                %td.preferred{:'rv-show' => 'ui:isOwner'}
-                  %p{:'rv-show' => "attr.preferred"} preferred
-                  %input{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind image", value: "Set Prefrence", :'rv-hide' => "attr.preferred | checkLoginHide "}
+        %table#consolidated_location
+          %thead
+            %tr
+              %th.empty
+              %th.field Location
+              %th.empty
+          %tbody
+            %tr{:'rv-each-attr' => "cache:_meta | getAttributes location"}
+              %td.source{:'rv-text' => "attr.source"}
+              %td.value{:'rv-text' =>  "attr.value | asAddress"}
+              %td.preferred{:"rv-show" => 'ui:isOwner'}
+                %p{:'rv-show' => "attr.preferred"} Prefered
+                %input.button{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind location", value: "Select", :'rv-hide' => "attr.preferred | checkLoginHide "}
+
+        %table#consolidated_image
+          %thead
+            %th.empty
+            %th.field Image
+            %th.empty
+          %tbody
+            %tr{:'rv-each-attr' => "cache:_meta | getAttributes image"}
+              %td.source{:'rv-text' => "attr.source"}
+              %td.value{:'rv-text' =>  "attr.value"} FFF
+              %td.preferred{:'rv-show' => 'ui:isOwner'}
+                %p{:'rv-show' => "attr.preferred"} Prefered
+                %input.button{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind image", value: "Select", :'rv-hide' => "attr.preferred | checkLoginHide "}
+    
+    %form{action: 'Post', url: 'whatever',  :"rv-show" => 'adapters.showRefForm < :hasFree'}
+      %table{id: 'ref_view'}
+        %thead
+          %tr
+            %th.adapter Adapter
+            %th.adapter_id ID
+            %th.adapter_status Status
+            %th.adapter_actions{:"rv-show" => 'ui:isOwner'} Actions
+        %tbody
+          %tr{:'rv-each-ref' => 'group:refs'}
+            %td.adapter { ref.adapter }
+            %td.adapter_id{:'rv-text' => 'ref.id'}
+            %td.adapter_status { ref.status }
+            %td.adapter_actions{:"rv-show" => 'ui:isOwner'}
+              %input.button.danger{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
+          %tr
+            %td.adapter
+              %select#addRefAdapterSelect
+                %option{:'rv-each-adapter' => "adapters:free", :'rv-value' => 'adapter'} {adapter | humanize}
+            %td.adapter_id
+              %input#addRefValue{type: 'text'}
+            %td.adapter_status
+              %p{:'rv-show' => 'ui.addRefError'} Error, Pick an adapter
+            %td.adapter_actions
+              %input.button{type: 'submit', value: 'Add', :'rv-on-click' => "ui.addRef"}
+
     -if current_user.present?
       %section{id: 'group_control'}
-        %input{type: 'submit', value: 'Save Group', :'rv-on-click' => "ui.saveGroup", :"rv-show" => 'ui:isOwner'}
-        %input.danger{type: 'submit', value: 'Delete Group', :'rv-on-click' => "ui.deleteGroup", :"rv-show" => 'ui:isOwner'}
-        %input{type: 'submit', value: 'Claim Group', :'rv-on-click' => "ui.claimGroup", :'rv-hide' => 'ui:hasClaim'}
-        %input{type: 'submit', value: 'Clear Cache', :'rv-on-click' => "ui.clearCache"}
+        %input.button{type: 'submit', value: 'Clear Cache', :'rv-on-click' => "ui.clearCache"}
+        %input.button.danger{type: 'submit', value: 'Delete Group', :'rv-on-click' => "ui.deleteGroup", :"rv-show" => 'ui:isOwner'}
+        %input.button.save{type: 'submit', value: 'Save Group', :'rv-on-click' => "ui.saveGroup", :"rv-show" => 'ui:isOwner'}
+        
+        
 
 
 
