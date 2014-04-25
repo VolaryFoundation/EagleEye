@@ -1,36 +1,45 @@
 #frame
   #page_title
-    %h1="Group: #{params[:id]}"
+    %h1="Group: Create New"
   #main
-    .flash
-      .notice{:'rv-show' => 'ui:groupRefNotice'}
-      .alert{:'rv-show' => 'ui:groupRefError'}
-        %span{:'rv-show' => 'ui:badRefError'}
+    .alert
+      .success.masshide{:'rv-show' => 'ui:groupRefNotice'}
+      .error.masshide{:'rv-show' => 'ui:groupRefError'}
+        %span.masshide{:'rv-show' => 'ui:badRefError'}
           Some of references you provided were invalid. Please delete broken adapters and try again
-    %section{id: 'ref_view'}
-      %h3 Refs
-      %table
+  %form{action: 'Post', url: ''}
+    %table{id: 'ref_view'}
+      %thead
         %tr
-          %th Adapter
-          %th ID
-          %th Status
-          %th Actions
+          %th.adapter Adapter
+          %th.adapter_id ID
+          %th.adapter_status Status
+          %th.adapter_actions Actions
+      %tbody
         %tr{:'rv-each-ref' => 'group:refs'}
-          %td {ref.adapter}
-          %td
-            %span{:'rv-text' => 'ref.id'}
-          %td {ref.status}
-          %td
-            %input{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
-      %form{:'rv-hide' => "adapters:free | isEmpty", action: 'Post', url: 'whatever'}
-        %fieldset
-          %p{:'rv-show' => 'ui.addRefError'} Error, Pick an adapter
-          %select#addRefAdapterSelect
-            %option{:'rv-each-adapter' => "adapters:free", :'rv-value' => 'adapter'} {adapter | humanize}
-          %input#addRefValue{type: 'text'}
-          %input{type: 'submit', value: 'Add', :'rv-on-click' => "ui.addRef"}
-    %section{id: 'group_control'}
-      %input{type: 'submit', value: 'Save Group', :'rv-on-click' => "ui.saveGroup"}
+          %td.adapter { ref.adapter }
+          %td.adapter_id{:'rv-text' => 'ref.id'}
+          %td.adapter_status { ref.status }
+          %td.adapter_actions
+            %input.button.danger{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
+        %tr{:'rv-hide' => "adapters:free | isEmpty"}
+          %td.adapter
+            %select#addRefAdapterSelect
+              %option{:'rv-each-adapter' => "adapters:free", :'rv-value' => 'adapter'} {adapter | humanize}
+          %td.adapter_id
+            %input#addRefValue{type: 'text'}
+          %td.adapter_status
+            %p{:'rv-show' => 'ui.addRefError'}
+          %td.adapter_actions
+            %input.button{type: 'submit', value: 'Add', :'rv-on-click' => "ui.addRef"}
+  %section{id: 'group_control'}
+    %input.button.save{type: 'submit', value: 'Save Group', :'rv-on-click' => "ui.saveGroup"}
+
+
+
+
+
+
 :javascript
   var baked = {
     eagleID: undefined,

@@ -62,7 +62,7 @@
             %tr{:'rv-each-attr' => "cache:_meta | getAttributes website", :'rv-class-highlight' => "attr.preferred"}
               %td.source{:'rv-text' => "attr.source"}
               %td.value
-                %a{:'rv-src' =>  "attr.value", :'rv-text' =>  "attr.value" }
+                %a{:'rv-href' =>  "attr.value", :'rv-text' =>  "attr.value" }
               %td.preferred{:"rv-show" => 'ui:isOwner'}
                 %p{:'rv-show' => "attr.preferred"} Prefered
                 %input.button{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind website", value: "Select", :'rv-hide' => "attr.preferred | checkLoginHide "}
