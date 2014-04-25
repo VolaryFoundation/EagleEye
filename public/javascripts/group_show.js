@@ -66,7 +66,16 @@ group.on('change:refs', adapters.update)
 
 
 var masshideActivate = function() {
-  $('.masshide').hide();
+  ui.set('groupRefNotice', false)
+  ui.set('groupClaimNotice', false)
+  ui.set('groupClaimMade', false)
+  ui.set('groupUpdated', false)
+  ui.set('groupControlError', false)
+  ui.set('groupRefFlash', false)
+  ui.set('groupRefNotice', false)
+  ui.set('groupControlError', false)
+  ui.set('badRefError', false)
+  ui.set('groupError', false)
 }
 
 
@@ -86,7 +95,8 @@ var UI = Backbone.Model.extend({
     groupRefFlash: false,
     groupRefNotice: false,
     groupControlError: false,
-    badRefError: false
+    badRefError: false,
+    groupError: false
 
   },
 
@@ -107,9 +117,6 @@ var UI = Backbone.Model.extend({
     group.set('refs', refs)
     group.trigger('change:refs')
   },
-
-  
-
 
   setPref: function(key, e, obj) {
     masshideActivate()
