@@ -161,6 +161,10 @@ a {
 .hidden {
   display: none; }
 
+.center {
+  margin: 0 auto;
+  width: 650px; }
+
 section.something {
   background-color: white;
   color: black;
@@ -172,9 +176,7 @@ section.something {
   float: left;
   padding: 14px;
   width: 100%;
-  margin-bottom: 14px; }
-
-#page {
+  margin-bottom: 14px;
   margin: 0 auto; }
 
 header {

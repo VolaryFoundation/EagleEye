@@ -5,18 +5,16 @@ module SC
   class GroupsController < BaseController
   
     get "/" do
-      begin
-        @groups = JSON.parse(RestClient.get "#{ENV['EAGLE_SERVER']}entities?limit=3000")
-      rescue
-        @groups = nil
-      end
-      haml :"groups/index"
+      results = Geocoder.search(request.ip)
+      state = (results.first.state.present? ? results.first.state : 'Colorado')
+      @url = "#{ENV['WIDGET_SERVER']}groups-map.html?filters[subject]=groups&filters[keys][location.state]=#{abbreviate(state)}&size=645x600&viewMode=list"
+      haml :'groups/map'
     end
     
     get "/map" do
       results = Geocoder.search(request.ip)
       state = (results.first.state.present? ? results.first.state : 'Colorado')
-      @url = "#{ENV['WIDGET_SERVER']}groups-map.html?filters[subject]=groups&filters[keys][location.state]=#{abbreviate(state)}&size=645x600"
+      @url = "#{ENV['WIDGET_SERVER']}groups-map.html?filters[subject]=groups&filters[keys][location.state]=#{abbreviate(state)}&size=645x600&viewMode=map"
       haml :'groups/map'
     end
 

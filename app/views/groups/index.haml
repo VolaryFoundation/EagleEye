@@ -1,15 +1,10 @@
 #frame
+  -#map_view
   #page_title
-    %h1 Groups
+    %h1 Groups List
+    :css
+      iframe { border: none; margin-top: 10px; overflow: hidden; }
   #main
-    %section#list-index
-      %ul.list
-        - if @groups.present?
-          - @groups.each do |group|
-            %li{id: "#{group['_id']}"}
-              %ul
-                - group['refs'].each do |ref|
-                  %li= "#{ref['adapter']}: #{ref['id']}, #{ref['status']}"
-            %a{href: "/groups/#{group['_id']}"} View
-        -else
-          %li Unable to collect groups at this time.
+    .center
+      %div.volary-widget{:'data-src' => @url}
+    %script{src: "#{ENV['WIDGET_SERVER']}js/widget_loader.js"}
