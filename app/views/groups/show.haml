@@ -5,8 +5,8 @@
       %section{id: 'claim_group'}
         %input.button{type: 'submit', value: 'Claim Group', :'rv-on-click' => "ui.claimGroup", :'rv-hide' => 'ui:hasClaim'}
   #main
-    .flash
-      .notice.masshide{:'rv-show' => 'ui:groupClaimNotice'}
+    .alert
+      .info.masshide{:'rv-show' => 'ui:groupClaimNotice'}
         %p.masshide{:'rv-show' => 'ui:groupClaimMade'}
           You claim has been submited and will be reviewed by and admin
     %table{id: 'claims_control', :"rv-show" => 'ui:isOwner'}
@@ -31,7 +31,7 @@
             %th.field Name
             %th.empty
         %tbody
-          %tr{:'rv-each-attr' => "cache:_meta | getAttributes name"}
+          %tr{:'rv-each-attr' => "cache:_meta | getAttributes name", :'rv-class-highlight' => "attr.preferred"}
             %td.source{:'rv-text' => "attr.source"}
             %td.value{:'rv-text' =>  "attr.value"}
             %td.preferred{:"rv-show" => 'ui:isOwner'}
@@ -45,7 +45,7 @@
               %th.field Description
               %th.empty
           %tbody
-            %tr{:'rv-each-attr' => "cache:_meta | getAttributes description"}
+            %tr{:'rv-each-attr' => "cache:_meta | getAttributes description", :'rv-class-highlight' => "attr.preferred"}
               %td.source{:'rv-text' => "attr.source"}
               %td.value{:'rv-text' =>  "attr.value | truncate 200"}
               %td.preferred{:"rv-show" => 'ui:isOwner'}
@@ -59,7 +59,7 @@
               %th.field Website
               %th.empty
           %tbody
-            %tr{:'rv-each-attr' => "cache:_meta | getAttributes website"}
+            %tr{:'rv-each-attr' => "cache:_meta | getAttributes website", :'rv-class-highlight' => "attr.preferred"}
               %td.source{:'rv-text' => "attr.source"}
               %td.value
                 %a{:'rv-src' =>  "attr.value", :'rv-text' =>  "attr.value" }
@@ -74,7 +74,7 @@
               %th.field Tags
               %th.empty
           %tbody
-            %tr{:'rv-each-attr' => "cache:_meta | getAttributes tags"}
+            %tr{:'rv-each-attr' => "cache:_meta | getAttributes tags", :'rv-class-highlight' => "attr.preferred"}
               %td.source{:'rv-text' => "attr.source"}
               %td.value{:'rv-text' =>  "attr.value | stringify"}
               %td.preferred{:"rv-show" => 'ui:isOwner'}
@@ -88,7 +88,7 @@
               %th.field Location
               %th.empty
           %tbody
-            %tr{:'rv-each-attr' => "cache:_meta | getAttributes location"}
+            %tr{:'rv-each-attr' => "cache:_meta | getAttributes location", :'rv-class-highlight' => "attr.preferred"}
               %td.source{:'rv-text' => "attr.source"}
               %td.value{:'rv-text' =>  "attr.value | asAddress"}
               %td.preferred{:"rv-show" => 'ui:isOwner'}
@@ -101,17 +101,17 @@
             %th.field Image
             %th.empty
           %tbody
-            %tr{:'rv-each-attr' => "cache:_meta | getAttributes image"}
+            %tr{:'rv-each-attr' => "cache:_meta | getAttributes image", :'rv-class-highlight' => "attr.preferred"}
               %td.source{:'rv-text' => "attr.source"}
               %td.value{:'rv-text' =>  "attr.value"} FFF
               %td.preferred{:'rv-show' => 'ui:isOwner'}
                 %p{:'rv-show' => "attr.preferred"} Prefered
                 %input.button{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind image", value: "Select", :'rv-hide' => "attr.preferred | checkLoginHide "}
-    .flash
-      .notice.masshide{:'rv-show' => 'ui:groupRefNotice'}
+    .alert
+      .success.masshide{:'rv-show' => 'ui:groupRefNotice'}
         %p.masshide{:'rv-show' => 'ui:groupUpdated'}
           This group has been updated!
-      .alert.masshide{:'rv-show' => 'ui:groupError'}
+      .error.masshide{:'rv-show' => 'ui:groupError'}
         %p.masshide{:'rv-show' => 'ui:badRefError'}
           Some of references you provided were invalid. Please delete broken adapters and try again
 

@@ -222,26 +222,43 @@ footer {
   width: 65%;
   margin-top: 21px; }
   footer a {
-    color: white; }
+    color: #666666; }
 
-.flash {
-  width: 65%;
+.alert {
+  width: 80%;
   margin: 0 auto;
   text-align: center;
-  font-size: larger;
-  height: 115%; }
-  .flash .notice {
-    background-color: RGB(69, 185, 6);
+  font-size: large; }
+  .alert p {
+    padding: 1em 0; }
+  .alert .info {
+    background-color: #d9edf7;
+    border: 1px solid #bce8f1;
+    color: #31708f;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
-    border-radius: 4px;
-    padding: 7px 0; }
-  .flash .alert {
-    background-color: red;
+    border-radius: 4px; }
+  .alert .warning {
+    background-color: #fcf8e3;
+    border-color: #faebcc;
+    color: #8a6d3b;
     -webkit-border-radius: 4px;
     -moz-border-radius: 4px;
-    border-radius: 4px;
-    padding: 7px 0; }
+    border-radius: 4px; }
+  .alert .success {
+    background-color: #dff0d8;
+    border: 1px solid #d6e9c6;
+    color: #3c763d;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px; }
+  .alert .error {
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    color: #a94442;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px; }
 
 #content #frame #map_view #page_title {
   width: 800px;
@@ -258,7 +275,6 @@ footer {
     #content #frame #page_title {
       background-color: white;
       color: black;
-      float: left;
       padding: 1em 0;
       width: 100%;
       margin-bottom: 1em;
@@ -347,6 +363,8 @@ table {
     border-bottom: 1px solid gainsboro; }
     table tbody tr:last-child {
       border-bottom: 1px solid #b4b4b4; }
+    table tbody tr.highlight {
+      background-color: #f0f7fc; }
   table tbody td {
     padding: 1em;
     border-right: 1px solid gainsboro; }
