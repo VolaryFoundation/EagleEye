@@ -44,11 +44,11 @@
       #title
       #content
         - if flash[:notice].present?
-          .flash
-            .notice=flash[:notice]
+          .alert
+            .success.info=flash[:notice]
         - if flash[:alert].present?
-          .flash
-            .alert=flash[:alert]
+          .alert
+            .error=flash[:alert]
         = yield
     %footer
       %a{href: "mailto:admin@volary.org", target: "_top"}Contact Us

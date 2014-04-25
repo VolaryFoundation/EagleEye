@@ -6,7 +6,7 @@
         %input.button{type: 'submit', value: 'Claim Group', :'rv-on-click' => "ui.claimGroup", :'rv-hide' => 'ui:hasClaim'}
   #main
     .alert
-      .info.masshide{:'rv-show' => 'ui:groupClaimNotice'}
+      .info.success.masshide{:'rv-show' => 'ui:groupClaimNotice'}
         %p.masshide{:'rv-show' => 'ui:groupClaimMade'}
           You claim has been submited and will be reviewed by and admin
     %table{id: 'claims_control', :"rv-show" => 'ui:isOwner'}
@@ -109,7 +109,7 @@
                 %input.button{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind image", value: "Select", :'rv-hide' => "attr.preferred | checkLoginHide "}
     .alert
       .success.masshide{:'rv-show' => 'ui:groupRefNotice'}
-        %p.masshide{:'rv-show' => 'ui:groupUpdated'}
+        %p.info.masshide{:'rv-show' => 'ui:groupUpdated'}
           This group has been updated!
       .error.masshide{:'rv-show' => 'ui:groupError'}
         %p.masshide{:'rv-show' => 'ui:badRefError'}
