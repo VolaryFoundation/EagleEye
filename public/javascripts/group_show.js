@@ -156,6 +156,7 @@ var UI = Backbone.Model.extend({
         }else{
           ui.set('groupRefNotice', true)
           ui.set('groupUpdated', true)
+          cache.fetch({data: {type: 'group'}})
         }
       },
       error: function(a,b,c) {
