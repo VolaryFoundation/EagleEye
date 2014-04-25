@@ -6,13 +6,9 @@
         %input.button{type: 'submit', value: 'Claim Group', :'rv-on-click' => "ui.claimGroup", :'rv-hide' => 'ui:hasClaim'}
   #main
     .flash
-      .notice{:'rv-show' => 'ui:groupNotice'}
-        %p{:'rv-show' => 'ui:groupControlClaimMade'}
+      .notice.masshide{:'rv-show' => 'ui:groupClaimNotice'}
+        %p.masshide{:'rv-show' => 'ui:groupClaimMade'}
           You claim has been submited and will be reviewed by and admin
-      .alert{:'rv-show' => 'ui:groupError'}
-        %p{:'rv-show' => 'ui:badRefError'}
-          Some of references you provided were invalid. Please delete broken adapters and try again
-
     %table{id: 'claims_control', :"rv-show" => 'ui:isOwner'}
       %thead
         %tr
@@ -111,8 +107,15 @@
               %td.preferred{:'rv-show' => 'ui:isOwner'}
                 %p{:'rv-show' => "attr.preferred"} Prefered
                 %input.button{type: 'submit', :'rv-on-click' => "ui.setPref | preventDefault | bind image", value: "Select", :'rv-hide' => "attr.preferred | checkLoginHide "}
-    
-    %form{action: 'Post', url: 'whatever',  :"rv-show" => 'adapters.showRefForm < :hasFree'}
+    .flash
+      .notice.masshide{:'rv-show' => 'ui:groupRefNotice'}
+        %p.masshide{:'rv-show' => 'ui:groupUpdated'}
+          This group has been updated!
+      .alert.masshide{:'rv-show' => 'ui:groupError'}
+        %p.masshide{:'rv-show' => 'ui:badRefError'}
+          Some of references you provided were invalid. Please delete broken adapters and try again
+
+    %form{action: 'Post', url: ''}
       %table{id: 'ref_view'}
         %thead
           %tr
@@ -127,14 +130,14 @@
             %td.adapter_status { ref.status }
             %td.adapter_actions{:"rv-show" => 'ui:isOwner'}
               %input.button.danger{type: 'submit', value: 'Delete', :'rv-on-click' => "ui.deleteRef"}
-          %tr
+          %tr{:"rv-show" => 'adapters.showRefForm < :hasFree'}
             %td.adapter
               %select#addRefAdapterSelect
                 %option{:'rv-each-adapter' => "adapters:free", :'rv-value' => 'adapter'} {adapter | humanize}
             %td.adapter_id
               %input#addRefValue{type: 'text'}
             %td.adapter_status
-              %p{:'rv-show' => 'ui.addRefError'} Error, Pick an adapter
+              %p{:'rv-show' => 'ui.addRefError'}
             %td.adapter_actions
               %input.button{type: 'submit', value: 'Add', :'rv-on-click' => "ui.addRef"}
 
@@ -143,10 +146,6 @@
         %input.button{type: 'submit', value: 'Clear Cache', :'rv-on-click' => "ui.clearCache"}
         %input.button.danger{type: 'submit', value: 'Delete Group', :'rv-on-click' => "ui.deleteGroup", :"rv-show" => 'ui:isOwner'}
         %input.button.save{type: 'submit', value: 'Save Group', :'rv-on-click' => "ui.saveGroup", :"rv-show" => 'ui:isOwner'}
-        
-        
-
-
 
 :javascript
   var baked = {

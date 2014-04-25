@@ -65,7 +65,9 @@ group.on('change:prefs', setPrefsOnCache)
 group.on('change:refs', adapters.update)
 
 
-
+var masshideActivate = function() {
+  $('.masshide').hide();
+}
 
 
 var UI = Backbone.Model.extend({
@@ -76,9 +78,10 @@ var UI = Backbone.Model.extend({
     isAdmin: (user.get('role') == "admin"),
     isOwner: ((user.get('role') == "admin") || (claims.hasApprovedClaim(user.get('id')))),
     hasClaim: claims.hasClaim() != undefined,
-    groupControlFlash: false,
-    groupControlNotice: false,
-    groupControlClaimMade: false,
+    groupRefNotice: false,
+    groupClaimNotice: false,
+    groupClaimMade: false,
+    groupUpdated: false,
     groupControlError: false,
     groupRefFlash: false,
     groupRefNotice: false,
@@ -97,6 +100,7 @@ var UI = Backbone.Model.extend({
   },
 
   deleteRef: function(e, obj) {
+    masshideActivate()
     e.preventDefault();
     refs = group.get('refs')
     refs.splice(refs.indexOf(obj.ref), 1)
@@ -108,6 +112,7 @@ var UI = Backbone.Model.extend({
 
 
   setPref: function(key, e, obj) {
+    masshideActivate()
     var prefs = _.extend({}, group.get('prefs'))
     prefs[key] = obj.attr.source
     group.set('prefs', prefs)
@@ -117,16 +122,19 @@ var UI = Backbone.Model.extend({
   },
 
   acceptClaim: function(e, obj) {
+    masshideActivate()
     e.preventDefault();
     obj.claim.save({status: 'approved'})
   },
 
   rejectClaim: function(e, obj) {
+    masshideActivate()
     e.preventDefault();
     obj.claim.save({status: 'rejected'})
   },
 
   deleteGroup: function() {
+    masshideActivate()
     var r = confirm("Are you sure you want to delete this group?");
     if (r == true){
       completed = group.destroy();
@@ -137,12 +145,17 @@ var UI = Backbone.Model.extend({
   },
 
   saveGroup: function() {
+    masshideActivate()
+    _.each(group.get('refs'), function(ref) {
+      if ( ref.status == 'pending' ) { ref.status = 'approved' }
+    })
     group.save(null, {
       success: function(e, obj) {
         if (typeof(baked.eagleID) == "undefined") {
           window.location.replace("/groups/" + obj[0]._id)
         }else{
-          alert("Updated")
+          ui.set('groupRefNotice', true)
+          ui.set('groupUpdated', true)
         }
       },
       error: function(a,b,c) {
@@ -154,20 +167,21 @@ var UI = Backbone.Model.extend({
   },
 
   claimGroup: function() {
+    masshideActivate()
     ui.set('hasClaim', true)
     claim = new Claim({})
     claim.set('eagle_id', baked.eagleID)
     claim.save(null, {
       success: function(e, obj) {
         claims.fetch()
-        ui.set('groupNotice', true)
-        ui.set('groupControlClaimMade', true)
+        ui.set('groupClaimNotice', true)
+        ui.set('groupClaimMade', true)
       }
     })
   },
 
   addRef: function(e, obj) {
-
+    masshideActivate()
     e.preventDefault();
     refs = group.get('refs')
     select = document.getElementById("addRefAdapterSelect");
@@ -183,6 +197,7 @@ var UI = Backbone.Model.extend({
   },
 
   clearCache: function() {
+    masshideActivate()
     if (typeof(baked.eagleID) != "undefined") {
       $.ajax({
         url: baked.eagleServer + 'cache/' + baked.eagleID + '?type=group' ,
