@@ -34,7 +34,6 @@ var Cache = Backbone.Model.extend({
 })
 
 var saveGroup = function() {
-  alert('This is where I would save the entity');
   masshideActivate()
   _.each(group.get('refs'), function(ref) {
     if ( ref.status == 'pending' ) { ref.status = 'approved' }
