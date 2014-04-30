@@ -29,7 +29,7 @@ var Claims = Backbone.Collection.extend({
 
 
 var Cache = Backbone.Model.extend({
-  idAttribute: '_id',
+  idAttribute: '_entityId',
   urlRoot: baked.eagleServer + "cache"
 })
 
@@ -45,7 +45,7 @@ var saveGroup = function() {
       }else{
         ui.set('groupRefNotice', true)
         ui.set('groupUpdated', true)
-        cache.fetch({data: {type: 'group'}})
+        fetchNewCache()
       }
     },
     error: function(a,b,c) {
@@ -72,11 +72,20 @@ var updateAdapters = function() {
   })
 }
 
+var fetchNewCache = function() {
+  oldCache =  new Cache(cache.attributes)
+  var gotCache = cache.fetch({data: {type: 'group'}})
+  gotCache.then(function() {
+    if (cache.get('_meta') == oldCache.get('_meta')) {
+      setTimeout(cache.fetch({data: {type: 'group'}}), 2000)}
+  })
+}
+
 var group = new Group({_id: baked.eagleID});
 groupRecieved = group.fetch()
 var user = new User();
 var claims = new Claims(baked.claims);
-var cache = new Cache({_id: baked.eagleID})
+var cache = new Cache({_entityId: baked.eagleID})
 var adapters = new Adapters()
 groupRecieved.then( function() {adapters.update()})
 cache.fetch({data: {type: 'group'}})
@@ -236,7 +245,7 @@ var UI = Backbone.Model.extend({
         url: baked.eagleServer + 'cache/' + baked.eagleID + '?type=group' ,
         type: 'DELETE',
         success: function(result) {
-          // Do something with the result
+          fetchCache()
         }
       });
     }
