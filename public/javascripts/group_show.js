@@ -33,10 +33,34 @@ var Cache = Backbone.Model.extend({
   urlRoot: baked.eagleServer + "cache"
 })
 
+var saveGroup = function() {
+  alert('This is where I would save the entity');
+  masshideActivate()
+  _.each(group.get('refs'), function(ref) {
+    if ( ref.status == 'pending' ) { ref.status = 'approved' }
+  })
+  group.save(null, {
+    success: function(e, obj) {
+      if (typeof(baked.eagleID) == "undefined") {
+        window.location.replace("/groups/" + obj[0]._id)
+      }else{
+        ui.set('groupRefNotice', true)
+        ui.set('groupUpdated', true)
+        cache.fetch({data: {type: 'group'}})
+      }
+    },
+    error: function(a,b,c) {
+      group.set(b.responseJSON.entity)
+      ui.set('groupError', true)
+      ui.set('badRefError', true)
+    }
+  })
+}
+
 var setPrefsOnCache = function() {
   _.each(group.get('prefs'), function(value, key) {
     meta = new Object(cache.get('_meta'))
-    if (meta) {
+    if (meta && meta.fields && meta.fields[key]) {
       _.each(meta.fields[key], function(entry){entry['preferred'] = (entry.source == value) ? true : false})
       cache.set('_meta', meta)
     }
@@ -48,8 +72,6 @@ var updateAdapters = function() {
     adapters.set('available', _.without(adapters.get('available'), value.adapter))
   })
 }
-
-
 
 var group = new Group({_id: baked.eagleID});
 groupRecieved = group.fetch()
@@ -63,7 +85,6 @@ group.on('sync', setPrefsOnCache)
 cache.on('sync', setPrefsOnCache)
 group.on('change:prefs', setPrefsOnCache)
 group.on('change:refs', adapters.update)
-
 
 var masshideActivate = function() {
   ui.set('groupRefNotice', false)
@@ -116,6 +137,7 @@ var UI = Backbone.Model.extend({
     refs.splice(refs.indexOf(obj.ref), 1)
     group.set('refs', refs)
     group.trigger('change:refs')
+    saveGroup()
   },
 
   setPref: function(key, e, obj) {
@@ -126,6 +148,8 @@ var UI = Backbone.Model.extend({
     meta = new Object( cache.get('_meta'))
     meta['updated_at'] = new Date().getTime();
     cache.set('_meta', meta)
+    saveGroup()
+
   },
 
   acceptClaim: function(e, obj) {
@@ -152,6 +176,7 @@ var UI = Backbone.Model.extend({
   },
 
   saveGroup: function() {
+    alert('test')
     masshideActivate()
     _.each(group.get('refs'), function(ref) {
       if ( ref.status == 'pending' ) { ref.status = 'approved' }
@@ -202,6 +227,7 @@ var UI = Backbone.Model.extend({
     refs.push(ref);
     group.set('refs', refs)
     group.trigger('change:refs')
+    saveGroup()
   },
 
   clearCache: function() {
@@ -219,6 +245,7 @@ var UI = Backbone.Model.extend({
 })
 
 var ui = new UI()
+
 
 //recieved.then(function() {
   rivets.bind(document.getElementById('frame'), {

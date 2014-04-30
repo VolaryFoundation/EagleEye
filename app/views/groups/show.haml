@@ -145,7 +145,6 @@
       %section{id: 'group_control'}
         %input.button{type: 'submit', value: 'Clear Cache', :'rv-on-click' => "ui.clearCache"}
         %input.button.danger{type: 'submit', value: 'Delete Group', :'rv-on-click' => "ui.deleteGroup", :"rv-show" => 'ui:isOwner'}
-        %input.button.save{type: 'submit', value: 'Save Group', :'rv-on-click' => "ui.saveGroup", :"rv-show" => 'ui:isOwner'}
 
 :javascript
   var baked = {
