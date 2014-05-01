@@ -9,4 +9,4 @@
           %li
             %a{href: "mailto:#{claim.user_email}"}= claim.user_email
             =" request access to "
-            %a{href: "http://directory.secularconnect.org/groups/#{claim.eagle_id}"}= claim.eagle_id
+            %a{href: "#{ENV['CURRENT_SERVER']}groups/#{claim.eagle_id}"}= claim.eagle_id

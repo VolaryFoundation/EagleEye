@@ -1,5 +1,17 @@
 var user = new User();
 var group = new Group({refs: []});
+
+var masshideActivate = function() {
+  ui.set('groupControlFlash', false)
+  ui.set('groupControlNotice', false)
+  ui.set('groupControlClaimMade', false)
+  ui.set('groupControlError', false)
+  ui.set('groupRefFlash', false)
+  ui.set('groupRefNotice', false)
+  ui.set('groupControlError', false)
+  ui.set('badRefError', false)
+}
+
 var UI = Backbone.Model.extend({
 
   defaults: {
@@ -31,6 +43,10 @@ var UI = Backbone.Model.extend({
   },
 
   saveGroup: function() {
+    masshideActivate()
+    _.each(group.get('refs'), function(ref) {
+      if ( ref.status == 'pending' ) { ref.status = 'approved' }
+    })
     group.save(null, {
       success: function(e, obj) {
         if (typeof(baked.eagleID) == "undefined") {

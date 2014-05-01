@@ -159,6 +159,10 @@ var UI = Backbone.Model.extend({
     saveGroup()
 
   },
+  redirectLogin: function() {
+    window.location.replace("/login")
+
+  },
 
   acceptClaim: function(e, obj) {
     masshideActivate()
@@ -184,7 +188,6 @@ var UI = Backbone.Model.extend({
   },
 
   saveGroup: function() {
-    alert('test')
     masshideActivate()
     _.each(group.get('refs'), function(ref) {
       if ( ref.status == 'pending' ) { ref.status = 'approved' }

@@ -4,6 +4,11 @@
     -if current_user.present?
       %section{id: 'claim_group'}
         %input.button{type: 'submit', value: 'Claim Group', :'rv-on-click' => "ui.claimGroup", :'rv-hide' => 'ui:hasClaim'}
+    -else
+      %section{id: 'claim_group'}
+        %a{href: '/login'} Login to Claim Group
+        -#%input.button{type: 'submit', value: 'Login to Cliam Group', :'rv-on-click' => "ui.redirectLogin"}
+
   #main
     .alert
       .info.success.masshide{:'rv-show' => 'ui:groupClaimNotice'}
