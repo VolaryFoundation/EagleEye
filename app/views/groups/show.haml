@@ -29,7 +29,7 @@
           %tr
             %th.empty
             %th.field Name
-            %th.empty
+            %th.empty{:"rv-show" => 'ui:isOwner'}
         %tbody
           %tr{:'rv-each-attr' => "cache:_meta | getAttributes name", :'rv-class-highlight' => "attr.preferred"}
             %td.source{:'rv-text' => "attr.source"}
@@ -43,7 +43,7 @@
             %tr
               %th.empty
               %th.field Description
-              %th.empty
+              %th.empty{:"rv-show" => 'ui:isOwner'}
           %tbody
             %tr{:'rv-each-attr' => "cache:_meta | getAttributes description", :'rv-class-highlight' => "attr.preferred"}
               %td.source{:'rv-text' => "attr.source"}
@@ -57,7 +57,7 @@
             %tr
               %th.empty
               %th.field Website
-              %th.empty
+              %th.empty{:"rv-show" => 'ui:isOwner'}
           %tbody
             %tr{:'rv-each-attr' => "cache:_meta | getAttributes website", :'rv-class-highlight' => "attr.preferred"}
               %td.source{:'rv-text' => "attr.source"}
@@ -72,7 +72,7 @@
             %tr
               %th.empty
               %th.field Tags
-              %th.empty
+              %th.empty{:"rv-show" => 'ui:isOwner'}
           %tbody
             %tr{:'rv-each-attr' => "cache:_meta | getAttributes tags", :'rv-class-highlight' => "attr.preferred"}
               %td.source{:'rv-text' => "attr.source"}
@@ -86,7 +86,7 @@
             %tr
               %th.empty
               %th.field Location
-              %th.empty
+              %th.empty{:"rv-show" => 'ui:isOwner'}
           %tbody
             %tr{:'rv-each-attr' => "cache:_meta | getAttributes location", :'rv-class-highlight' => "attr.preferred"}
               %td.source{:'rv-text' => "attr.source"}
@@ -99,7 +99,8 @@
           %thead
             %th.empty
             %th.field Image
-            %th.empty
+            %th.empty{:"rv-show" => 'ui:isOwner'}
+            
           %tbody
             %tr{:'rv-each-attr' => "cache:_meta | getAttributes image", :'rv-class-highlight' => "attr.preferred"}
               %td.source{:'rv-text' => "attr.source"}
