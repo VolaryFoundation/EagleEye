@@ -1,11 +1,15 @@
 module SC
   class MainController < BaseController
     require 'uri'
-    
+
     get "/" do
       redirect to('/groups')
     end
-    
+
+    get "/status" do
+      ok 'Alive'
+    end
+
     get "/login" do ##new
       session[:request_url] = request.referer
       haml :"main/login"
