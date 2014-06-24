@@ -18,7 +18,20 @@ class User
   key :password_reset_token
   key :password_reset_expiration
   
-  validates :password, :length => { :in => 6..28 }
+  ##validates :password, :length => { :in => 6..28 }, 
+  validate :check_password
+
+  def check_password
+    if self.new? || password.present?
+      if password.present?
+        if password.length < 6 || password.length > 28
+          errors.add( :password, "Password must be 6 - 28 charcters long")
+        end
+      else
+        errors.add( :password, "can not be blank")
+      end
+    end
+  end
   
   
   def self.authenticate(email, password)
